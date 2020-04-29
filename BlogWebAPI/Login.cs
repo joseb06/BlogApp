@@ -30,7 +30,7 @@ namespace BlogWebAPI
             {
                 identity.AddClaim(new Claim(ClaimTypes.Role, "Authenticated User"));
                 identity.AddClaim(new Claim(ClaimTypes.Name, authenticatedUser.First().userName));
-                //identity.AddClaim(new Claim(ClaimTypes.Email, authenticatedUser.First().email));
+                identity.AddClaim(new Claim(ClaimTypes.Email, authenticatedUser.First().email));
 
                 context.Validated(identity);
             }
