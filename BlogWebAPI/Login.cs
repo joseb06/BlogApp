@@ -19,19 +19,16 @@ namespace BlogWebAPI
         }
 
         public override async Task GrantResourceOwnerCredentials(OAuthGrantResourceOwnerCredentialsContext context)
-        {
-            blogdbEntities blogdb = new blogdbEntities();
-            
+        {            
             var identity = new ClaimsIdentity(context.Options.AuthenticationType);
 
-            var verifiedUser = blogdb.users.Where(u => u.userName == context.UserName && 
-                                                       u.password == context.Password);
-
-            if (verifiedUser.Count() > 0)
+            var verifiedUser = new UserValidation().ValidateUser(context.UserName, context.Password);
+            
+            if (verifiedUser != null)
             {
-                identity.AddClaim(new Claim(ClaimTypes.Role, "Authorized User"));
-                identity.AddClaim(new Claim(ClaimTypes.Name, verifiedUser.First().userName));
-                identity.AddClaim(new Claim(ClaimTypes.Email, verifiedUser.First().email));
+                identity.AddClaim(new Claim(ClaimTypes.Role, "Authorized_User"));
+                identity.AddClaim(new Claim(ClaimTypes.Name, verifiedUser.userName));
+                identity.AddClaim(new Claim(ClaimTypes.Email, verifiedUser.email));
 
                 context.Validated(identity);
             }
