@@ -85,5 +85,37 @@ namespace BlogWebAPI.Controllers
                 return Request.CreateResponse(HttpStatusCode.BadRequest, e.Message);
             }
         }
+
+        [Authorize]
+        [HttpDelete]
+        public HttpResponseMessage DeleteUser(int id)
+        {
+            try
+            {
+                using (var blogdb = new blogdbEntities())
+                {
+                    users newUser = (from u in blogdb.users
+                                     where u.id == id
+                                     select u).SingleOrDefault();
+                    if (newUser != null)
+                    {
+                        blogdb.Entry(newUser).State = System.Data.Entity.EntityState.Deleted;
+                        blogdb.SaveChanges();
+
+                        return Request.CreateResponse(HttpStatusCode.OK, 
+                            "The User data was deleted successfully.");
+                    }
+                    else
+                    {
+                        return Request.CreateErrorResponse(HttpStatusCode.NotFound,
+                        "User with Id " + id.ToString() + " not found to delete");
+                    }
+                }
+            }
+            catch (Exception e)
+            {
+                return Request.CreateResponse(HttpStatusCode.BadRequest, e.Message);
+            }
+        }
     }
 }
