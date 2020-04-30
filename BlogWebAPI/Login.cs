@@ -22,7 +22,7 @@ namespace BlogWebAPI
         {            
             var identity = new ClaimsIdentity(context.Options.AuthenticationType);
 
-            var verifiedUser = new UserValidation().ValidateUser(context.UserName, context.Password);
+            var verifiedUser = new UserAuthentication().AuthenticateUser(context.UserName, context.Password);
             
             if (verifiedUser != null)
             {

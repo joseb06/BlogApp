@@ -6,10 +6,10 @@ using System.Web;
 
 namespace BlogWebAPI.Models
 {
-    public class UserValidation : IDisposable
+    public class UserAuthentication : IDisposable
     {
         readonly blogdbEntities blogdb = new blogdbEntities();
-        public users ValidateUser(string username, string password)
+        public users AuthenticateUser(string username, string password)
         {
             return blogdb.users.FirstOrDefault(u => u.userName == username &&
                                                     u.password == password);
