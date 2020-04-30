@@ -29,9 +29,11 @@ namespace BlogWebAPI.Controllers
             {
                 using (var blogdb = new blogdbEntities())
                 {
+                    int lastUserId = blogdb.users.OrderByDescending(u => u.id).First().id;
+                    int nextUserId = lastUserId + 1;
                     users newUser = new users
                     {
-                        id = userModel.id,
+                        id = nextUserId,
                         userName = userModel.userName,
                         password = userModel.password,
                         email = userModel.email
