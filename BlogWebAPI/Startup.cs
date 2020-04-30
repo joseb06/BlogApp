@@ -16,14 +16,12 @@ namespace BlogWebAPI
             // Enable CORS (cross origin resource sharing) for making request using browser from different domains
             app.UseCors(Microsoft.Owin.Cors.CorsOptions.AllowAll);
 
-            var newLogin = new Login();
             OAuthAuthorizationServerOptions options = new OAuthAuthorizationServerOptions
             {
                 AllowInsecureHttp = true,
                 TokenEndpointPath = new PathString("/BlogApp/Login"),
                 AccessTokenExpireTimeSpan = TimeSpan.FromHours(1),
-                Provider = newLogin
-
+                Provider = new Login()
             };
             app.UseOAuthAuthorizationServer(options);
             app.UseOAuthBearerAuthentication(new OAuthBearerAuthenticationOptions());

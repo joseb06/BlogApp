@@ -17,8 +17,8 @@ namespace BlogWebAPI.Controllers
         [HttpGet]
         public IEnumerable<users> GetListOfUsers()
         {
-            var userList = blogdb.users.ToList();
-            return userList;
+            var listAllUsers = blogdb.users.ToList();
+            return listAllUsers;
 
         }
     }

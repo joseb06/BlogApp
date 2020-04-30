@@ -12,31 +12,32 @@ namespace BlogWebAPI
 {
     public class Login: OAuthAuthorizationServerProvider
     {
-
         public override async Task ValidateClientAuthentication(OAuthValidateClientAuthenticationContext context)
         {
             context.Validated();
 
         }
+
         public override async Task GrantResourceOwnerCredentials(OAuthGrantResourceOwnerCredentialsContext context)
         {
             blogdbEntities blogdb = new blogdbEntities();
             
             var identity = new ClaimsIdentity(context.Options.AuthenticationType);
 
-            var authenticatedUser = blogdb.users.Where(u => u.userName == context.UserName && u.password == context.Password);
+            var verifiedUser = blogdb.users.Where(u => u.userName == context.UserName && 
+                                                       u.password == context.Password);
 
-            if (authenticatedUser.Count() > 0)
+            if (verifiedUser.Count() > 0)
             {
-                identity.AddClaim(new Claim(ClaimTypes.Role, "Authenticated User"));
-                identity.AddClaim(new Claim(ClaimTypes.Name, authenticatedUser.First().userName));
-                identity.AddClaim(new Claim(ClaimTypes.Email, authenticatedUser.First().email));
+                identity.AddClaim(new Claim(ClaimTypes.Role, "Authorized User"));
+                identity.AddClaim(new Claim(ClaimTypes.Name, verifiedUser.First().userName));
+                identity.AddClaim(new Claim(ClaimTypes.Email, verifiedUser.First().email));
 
                 context.Validated(identity);
             }
             else
             {
-                context.SetError("Permiso Denegado, Datos erroneos");
+                context.SetError("invalid_grant", "Provided data is incorrect");
                 return;
             }
 
