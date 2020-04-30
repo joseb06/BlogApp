@@ -12,6 +12,8 @@ namespace BlogWebAPI
             if (!HttpContext.Current.User.Identity.IsAuthenticated)
             {
                 base.HandleUnauthorizedRequest(actionContext);
+                actionContext.Response = new System.Net.Http.HttpResponseMessage(System.Net.HttpStatusCode.Unauthorized);
+                
             }
             else
             {
