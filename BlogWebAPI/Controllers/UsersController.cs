@@ -39,7 +39,7 @@ namespace BlogWebAPI.Controllers
                         email = userModel.email
                     };
 
-                    blogdb.users.Add(newUser);
+                    blogdb.Entry(newUser).State = System.Data.Entity.EntityState.Added;
                     blogdb.SaveChanges();
 
                     return Request.CreateResponse(HttpStatusCode.OK, "User was created successfully.");
