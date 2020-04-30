@@ -51,5 +51,39 @@ namespace BlogWebAPI.Controllers
                  
             }
         }
+        [Authorize]
+        [HttpPut]
+        public HttpResponseMessage PutEditUser(int id, [FromBody]UsersModel userModel)
+        {
+            try
+            {
+                using (var blogdb = new blogdbEntities())
+                {
+                    users newUser = (from u in blogdb.users
+                                     where u.id == id
+                                     select u).SingleOrDefault();
+                    if (newUser != null)
+                    {
+                        newUser.userName = userModel.userName;
+                        newUser.password = userModel.password;
+                        newUser.email = userModel.email;
+
+                        blogdb.Entry(newUser).State = System.Data.Entity.EntityState.Modified;
+                        blogdb.SaveChanges();
+
+                        return Request.CreateResponse(HttpStatusCode.OK, "User data was updated successfully.");
+                    }
+                    else
+                    {
+                        return Request.CreateErrorResponse(HttpStatusCode.NotFound,
+                        "User with Id " + id.ToString() + " not found to update");
+                    }
+                }
+            }
+            catch (Exception e)
+            {
+                return Request.CreateResponse(HttpStatusCode.BadRequest, e.Message);
+            }
+        }
     }
 }
