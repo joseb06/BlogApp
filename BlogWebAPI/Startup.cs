@@ -21,7 +21,7 @@ namespace BlogWebAPI
                 AllowInsecureHttp = true,
                 TokenEndpointPath = new PathString("/BlogApp/Login"),
                 AccessTokenExpireTimeSpan = TimeSpan.FromHours(1),
-                Provider = new Login()
+                Provider = new AppOauthProvider()
             };
             app.UseOAuthAuthorizationServer(options);
             app.UseOAuthBearerAuthentication(new OAuthBearerAuthenticationOptions());

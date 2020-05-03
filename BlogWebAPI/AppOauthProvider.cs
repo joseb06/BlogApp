@@ -10,7 +10,7 @@ using Microsoft.Owin.Security.OAuth;
 
 namespace BlogWebAPI
 {
-    public class Login: OAuthAuthorizationServerProvider
+    public class AppOauthProvider: OAuthAuthorizationServerProvider
     {
         public override async Task ValidateClientAuthentication(OAuthValidateClientAuthenticationContext context)
         {
