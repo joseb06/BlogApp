@@ -27,6 +27,7 @@ namespace BlogWebAPI
             if (verifiedUser != null)
             {
                 identity.AddClaim(new Claim(ClaimTypes.Role, "Authorized_User"));
+                identity.AddClaim(new Claim("userID" , verifiedUser.id.ToString()));
                 identity.AddClaim(new Claim(ClaimTypes.Name, verifiedUser.userName));
                 identity.AddClaim(new Claim(ClaimTypes.Email, verifiedUser.email));
 
