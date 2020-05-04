@@ -1,16 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using BlogWebAPI.Models;
+using Microsoft.Owin.Security.OAuth;
 using System.Security.Claims;
 using System.Threading.Tasks;
-using System.Web;
-using BlogDatabase.Models;
-using BlogWebAPI.Models;
-using Microsoft.Owin.Security.OAuth;
 
 namespace BlogWebAPI
 {
-    public class AppOauthProvider: OAuthAuthorizationServerProvider
+    public class AppOauthProvider : OAuthAuthorizationServerProvider
     {
         public override async Task ValidateClientAuthentication(OAuthValidateClientAuthenticationContext context)
         {
@@ -19,15 +14,15 @@ namespace BlogWebAPI
         }
 
         public override async Task GrantResourceOwnerCredentials(OAuthGrantResourceOwnerCredentialsContext context)
-        {            
+        {
             var identity = new ClaimsIdentity(context.Options.AuthenticationType);
 
             var verifiedUser = new UserAuthentication().AuthenticateUser(context.UserName, context.Password);
-            
+
             if (verifiedUser != null)
             {
                 identity.AddClaim(new Claim(ClaimTypes.Role, "Authorized_User"));
-                identity.AddClaim(new Claim("userID" , verifiedUser.id.ToString()));
+                identity.AddClaim(new Claim("userID", verifiedUser.id.ToString()));
                 identity.AddClaim(new Claim(ClaimTypes.Name, verifiedUser.userName));
                 identity.AddClaim(new Claim(ClaimTypes.Email, verifiedUser.email));
 

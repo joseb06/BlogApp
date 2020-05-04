@@ -1,15 +1,13 @@
-﻿using System;
+﻿using BlogDatabase.Models;
+using BlogWebAPI.Models;
+using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Data.Entity;
-using System.Data.Entity.Infrastructure;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Web.Http;
-using System.Web.Http.Description;
-using BlogDatabase.Models;
-using BlogWebAPI.Models;
 
 namespace BlogWebAPI.Controllers
 {
@@ -97,8 +95,8 @@ namespace BlogWebAPI.Controllers
                 using (var blogdb = new blogdbEntities())
                 {
                     posts postToDelete = (from p in blogdb.posts
-                                     where p.id == id
-                                     select p).SingleOrDefault();
+                                          where p.id == id
+                                          select p).SingleOrDefault();
                     if (postToDelete != null)
                     {
                         blogdb.Entry(postToDelete).State = EntityState.Deleted;

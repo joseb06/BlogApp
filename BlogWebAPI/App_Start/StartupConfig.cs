@@ -1,9 +1,8 @@
-﻿using System;
-using System.Web.Http;
-using Microsoft.Owin;
+﻿using Microsoft.Owin;
 using Microsoft.Owin.Security.OAuth;
 using Owin;
-using BlogWebAPI;
+using System;
+using System.Web.Http;
 
 namespace BlogWebAPI
 {

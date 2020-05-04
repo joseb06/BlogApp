@@ -1,16 +1,18 @@
-﻿using System;
+﻿using BlogDatabase.Models;
+using BlogWebAPI.Models;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
+using System.Web;
 using System.Web.Http;
-using BlogDatabase.Models;
-using BlogWebAPI.Models;
 
 namespace BlogWebAPI.Controllers
 {
     public class UsersController : ApiController
     {
+
         [Authorize]
         [HttpGet]
         public IEnumerable<users> GetListOfUsers()
@@ -21,9 +23,10 @@ namespace BlogWebAPI.Controllers
                 return listAllUsers;
             }
         }
-        //[Authorize]
+
+        [AllowAnonymous]
         [HttpPost]
-        public HttpResponseMessage CreateUser(UsersModel userModel)
+        public HttpResponseMessage CreateUser([FromBody]UsersModel userModel)
         {
             try
             {
@@ -45,10 +48,10 @@ namespace BlogWebAPI.Controllers
                     return Request.CreateResponse(HttpStatusCode.OK, "User was created successfully.");
                 }
             }
-            catch(Exception e)
+            catch (Exception e)
             {
                 return Request.CreateResponse(HttpStatusCode.BadRequest, e.Message);
-                 
+
             }
         }
         [Authorize]
@@ -102,7 +105,7 @@ namespace BlogWebAPI.Controllers
                         blogdb.Entry(newUser).State = System.Data.Entity.EntityState.Deleted;
                         blogdb.SaveChanges();
 
-                        return Request.CreateResponse(HttpStatusCode.OK, 
+                        return Request.CreateResponse(HttpStatusCode.OK,
                             "The User data was deleted successfully.");
                     }
                     else

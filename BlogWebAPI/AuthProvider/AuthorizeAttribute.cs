@@ -1,11 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
+﻿using System.Web;
 
 namespace BlogWebAPI
 {
-    public class AuthorizeAttribute: System.Web.Http.AuthorizeAttribute
+    public class AuthorizeAttribute : System.Web.Http.AuthorizeAttribute
     {
         protected override void HandleUnauthorizedRequest(System.Web.Http.Controllers.HttpActionContext actionContext)
         {
@@ -13,7 +10,7 @@ namespace BlogWebAPI
             {
                 base.HandleUnauthorizedRequest(actionContext);
                 actionContext.Response = new System.Net.Http.HttpResponseMessage(System.Net.HttpStatusCode.Unauthorized);
-                
+
             }
             else
             {
