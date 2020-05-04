@@ -13,18 +13,26 @@ namespace BlogWebAPI.Controllers
 {
     public class PostsController : ApiController
     {
-        [Authorize]
+        [AllowAnonymous]
+        [Route("BlogApp/Users/{id}/Posts")]
         [HttpGet]
-        public IEnumerable<posts> GetListOfPostsByUser(int id)
+        public IEnumerable<Object> GetListOfPostsByUser(int id)
         {
             using (var blogdb = new blogdbEntities())
             {
                 List<posts> userPost = (from p in blogdb.posts
-                                 where p.id == id
-                                 select p).ToList();
-                return userPost;
+                                        where p.id_author == id
+                                        select p).ToList();
+                List<object> listOfPosts = new List<object>();
+
+                foreach (var item in userPost)
+                {
+                    listOfPosts.Add(new { item.id, item.content });
+                }
+                return listOfPosts;
             }
         }
+
         [Authorize]
         [HttpPost]
         public HttpResponseMessage CreatePost([FromBody]PostsModel postModel)
@@ -70,7 +78,7 @@ namespace BlogWebAPI.Controllers
                                      select p).SingleOrDefault();
                     if (newPost != null)
                     {
-                        newPost.id_author = postModel.id_author;
+                        newPost.id_author = postModel.idAuthor;
                         newPost.content = postModel.content;
 
                         blogdb.Entry(newPost).State = EntityState.Modified;
