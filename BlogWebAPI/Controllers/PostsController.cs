@@ -15,28 +15,32 @@ namespace BlogWebAPI.Controllers
     {
         [Authorize]
         [HttpGet]
-        public IEnumerable<posts> GetListOfPosts()
+        public IEnumerable<posts> GetListOfPostsByUser(int id)
         {
             using (var blogdb = new blogdbEntities())
             {
-                var listAllPosts = blogdb.posts.ToList();
-                return listAllPosts;
+                List<posts> userPost = (from p in blogdb.posts
+                                 where p.id == id
+                                 select p).ToList();
+                return userPost;
             }
         }
-        //[Authorize]
+        [Authorize]
         [HttpPost]
-        public HttpResponseMessage CreatePost(PostsModel postModel)
+        public HttpResponseMessage CreatePost([FromBody]PostsModel postModel)
         {
             try
             {
+                var currentUser = new UsersController();
                 using (var blogdb = new blogdbEntities())
                 {
-                    int lastPostId = blogdb.posts.OrderByDescending(p => p.id).First().id;
+                    int lastPostId = (!blogdb.posts.Any()) ? 0 : blogdb.posts.OrderByDescending(p => p.id).First().id;
                     int nextPostId = lastPostId + 1;
+
                     posts newPost = new posts
                     {
                         id = nextPostId,
-                        id_author = postModel.id_author,
+                        id_author = currentUser.GetLoginUserId(),
                         content = postModel.content
                     };
 
@@ -44,6 +48,7 @@ namespace BlogWebAPI.Controllers
                     blogdb.SaveChanges();
 
                     return Request.CreateResponse(HttpStatusCode.OK, "The Post was created successfully.");
+
                 }
             }
             catch (Exception e)

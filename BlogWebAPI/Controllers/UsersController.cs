@@ -12,6 +12,11 @@ namespace BlogWebAPI.Controllers
 {
     public class UsersController : ApiController
     {
+        public int GetLoginUserId()
+        {
+            var loggedUserData = System.Security.Claims.ClaimsPrincipal.Current;
+            return int.Parse(loggedUserData.FindFirst("userID").Value);
+        }
 
         [Authorize]
         [HttpGet]
