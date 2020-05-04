@@ -12,6 +12,7 @@ namespace BlogWebAPI.Controllers
 {
     public class UsersController : ApiController
     {
+        [NonAction]
         public int GetLoginUserId()
         {
             var loggedUserData = System.Security.Claims.ClaimsPrincipal.Current;
