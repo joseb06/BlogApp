@@ -13,6 +13,8 @@ namespace BlogWebAPI.Controllers
 {
     public class PostsController : ApiController
     {
+        readonly int loginUserId = new UsersController().GetLoginUserId();
+
         [AllowAnonymous]
         [Route("BlogApp/Users/{id}/Posts")]
         [HttpGet]
@@ -39,7 +41,6 @@ namespace BlogWebAPI.Controllers
         {
             try
             {
-                var currentUser = new UsersController();
                 using (var blogdb = new blogdbEntities())
                 {
                     int lastPostId = (!blogdb.posts.Any()) ? 0 : blogdb.posts.OrderByDescending(p => p.id).First().id;
@@ -48,7 +49,7 @@ namespace BlogWebAPI.Controllers
                     posts newPost = new posts
                     {
                         id = nextPostId,
-                        id_author = currentUser.GetLoginUserId(),
+                        id_author = loginUserId,
                         content = postModel.content
                     };
 
@@ -74,11 +75,10 @@ namespace BlogWebAPI.Controllers
                 using (var blogdb = new blogdbEntities())
                 {
                     posts newPost = (from p in blogdb.posts
-                                     where p.id == id
+                                     where p.id == id && p.id_author == loginUserId
                                      select p).SingleOrDefault();
                     if (newPost != null)
                     {
-                        newPost.id_author = postModel.idAuthor;
                         newPost.content = postModel.content;
 
                         blogdb.Entry(newPost).State = EntityState.Modified;
@@ -108,7 +108,7 @@ namespace BlogWebAPI.Controllers
                 using (var blogdb = new blogdbEntities())
                 {
                     posts postToDelete = (from p in blogdb.posts
-                                          where p.id == id
+                                          where p.id == id && p.id_author == loginUserId
                                           select p).SingleOrDefault();
                     if (postToDelete != null)
                     {
