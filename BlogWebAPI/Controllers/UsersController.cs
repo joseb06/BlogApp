@@ -5,7 +5,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
-using System.Web;
 using System.Web.Http;
 
 namespace BlogWebAPI.Controllers
@@ -59,7 +58,7 @@ namespace BlogWebAPI.Controllers
                 return Request.CreateErrorResponse(HttpStatusCode.BadRequest,
                                                     new HttpError
                                                     {
-                                                        Message = "The user was not created",
+                                                        Message = "The User was not created",
                                                         MessageDetail = string.Format(e.Message)
                                                     });
             }
@@ -89,13 +88,18 @@ namespace BlogWebAPI.Controllers
                     else
                     {
                         return Request.CreateErrorResponse(HttpStatusCode.NotFound,
-                        "User with Id " + id.ToString() + " not found to update");
+                        "User with Id: " + id.ToString() + " not found to update");
                     }
                 }
             }
             catch (Exception e)
             {
-                return Request.CreateResponse(HttpStatusCode.BadRequest, e.Message);
+                return Request.CreateErrorResponse(HttpStatusCode.BadRequest,
+                                                    new HttpError
+                                                    {
+                                                        Message = "User data cannot be updated",
+                                                        MessageDetail = string.Format(e.Message)
+                                                    });
             }
         }
 
@@ -127,7 +131,12 @@ namespace BlogWebAPI.Controllers
             }
             catch (Exception e)
             {
-                return Request.CreateResponse(HttpStatusCode.BadRequest, e.Message);
+                return Request.CreateErrorResponse(HttpStatusCode.BadRequest,
+                                                    new HttpError
+                                                    {
+                                                        Message = "User data cannot be deleted",
+                                                        MessageDetail = string.Format(e.Message)
+                                                    });
             }
         }
     }
