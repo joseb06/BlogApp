@@ -232,6 +232,7 @@
     <Compile Include="Areas\HelpPage\SampleGeneration\SampleDirection.cs" />
     <Compile Include="Areas\HelpPage\SampleGeneration\TextSample.cs" />
     <Compile Include="Areas\HelpPage\XmlDocumentationProvider.cs" />
+    <Compile Include="Controllers\CommentsController.cs" />
     <Compile Include="Controllers\PostsController.cs" />
     <Compile Include="AuthProvider\AppOauthProvider.cs" />
     <Compile Include="AuthProvider\AuthorizeAttribute.cs" />
@@ -240,6 +241,7 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Models\CommentsModel.cs" />
     <Compile Include="Models\PostsModel.cs" />
     <Compile Include="Models\UsersModel.cs" />
     <Compile Include="Models\UserAuthentication.cs" />

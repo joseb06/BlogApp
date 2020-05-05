@@ -30,6 +30,8 @@
           <Property Name="userName" Type="varchar" MaxLength="50" Nullable="false" />
           <Property Name="password" Type="varchar" MaxLength="25" Nullable="false" />
           <Property Name="email" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="token" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="token_validity_time" Type="bigint" Nullable="false" />
         </EntityType>
         <EntityContainer Name="blogdbModelStoreContainer">
           <EntitySet Name="comments" EntityType="Self.comments" Schema="blogdb" store:Type="Tables" />
@@ -65,6 +67,8 @@
           <Property Name="userName" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
           <Property Name="password" Type="String" MaxLength="25" FixedLength="false" Unicode="false" Nullable="false" />
           <Property Name="email" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="token" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="token_validity_time" Type="Int64" Nullable="false" />
         </EntityType>
         <EntityContainer Name="blogdbEntities" annotation:LazyLoadingEnabled="true">
           <EntitySet Name="comments" EntityType="Self.comments" />
@@ -99,6 +103,8 @@
           <EntitySetMapping Name="users">
             <EntityTypeMapping TypeName="blogdbModel.users">
               <MappingFragment StoreEntitySet="users">
+                <ScalarProperty Name="token_validity_time" ColumnName="token_validity_time" />
+                <ScalarProperty Name="token" ColumnName="token" />
                 <ScalarProperty Name="id" ColumnName="id" />
                 <ScalarProperty Name="userName" ColumnName="userName" />
                 <ScalarProperty Name="password" ColumnName="password" />
