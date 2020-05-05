@@ -43,9 +43,9 @@ namespace BlogWebAPI.Controllers
                     users newUser = new users
                     {
                         id = nextUserId,
-                        userName = userModel.userName,
-                        password = userModel.password,
-                        email = userModel.email
+                        userName = userModel.UserName,
+                        password = userModel.Password,
+                        email = userModel.Email
                     };
 
                     blogdb.Entry(newUser).State = System.Data.Entity.EntityState.Added;
@@ -56,8 +56,12 @@ namespace BlogWebAPI.Controllers
             }
             catch (Exception e)
             {
-                return Request.CreateResponse(HttpStatusCode.BadRequest, e.Message);
-
+                return Request.CreateErrorResponse(HttpStatusCode.BadRequest,
+                                                    new HttpError
+                                                    {
+                                                        Message = "The user was not created",
+                                                        MessageDetail = string.Format(e.Message)
+                                                    });
             }
         }
         [Authorize]
@@ -73,9 +77,9 @@ namespace BlogWebAPI.Controllers
                                      select u).SingleOrDefault();
                     if (newUser != null)
                     {
-                        newUser.userName = userModel.userName;
-                        newUser.password = userModel.password;
-                        newUser.email = userModel.email;
+                        newUser.userName = userModel.UserName;
+                        newUser.password = userModel.Password;
+                        newUser.email = userModel.Email;
 
                         blogdb.Entry(newUser).State = System.Data.Entity.EntityState.Modified;
                         blogdb.SaveChanges();

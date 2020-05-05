@@ -1,4 +1,5 @@
-﻿using System.Net.Http;
+﻿using BlogWebAPI.Controllers;
+using System.Net.Http;
 using System.Web.Http;
 using System.Web.Http.Routing;
 
@@ -8,7 +9,8 @@ namespace BlogWebAPI
     {
         public static void Register(HttpConfiguration config)
         {
-            // Web API configuration and services
+            // Web API configuration Filters
+            config.Filters.Add(new ValidateModelAttribute());
 
             // Web API routes
             config.MapHttpAttributeRoutes();
