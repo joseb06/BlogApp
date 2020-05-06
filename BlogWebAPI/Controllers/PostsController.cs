@@ -15,6 +15,11 @@ namespace BlogWebAPI.Controllers
     {
         readonly int loginUserId = new UsersController().GetLoginUserId();
 
+        /// <summary>
+        /// Method to get the list of all posts added by a specific user
+        /// </summary>
+        /// <param name="id">Identificator of the user who created the post</param>
+        /// <returns></returns>
         [Authorize]
         [Route("BlogApp/Users/{id}/Posts")]
         [HttpGet]
@@ -35,6 +40,11 @@ namespace BlogWebAPI.Controllers
             }
         }
 
+        /// <summary>
+        /// Method to create new post
+        /// </summary>
+        /// <param name="postModel"></param>
+        /// <returns></returns>
         [Authorize]
         [HttpPost]
         public HttpResponseMessage CreatePost([FromBody]PostsModel postModel)
@@ -50,7 +60,7 @@ namespace BlogWebAPI.Controllers
                     {
                         id = nextPostId,
                         id_author = loginUserId,
-                        content = postModel.content
+                        content = postModel.Content
                     };
 
                     blogdb.Entry(newPost).State = EntityState.Added;
@@ -71,6 +81,13 @@ namespace BlogWebAPI.Controllers
 
             }
         }
+
+        /// <summary>
+        /// Method to modify the data in your own publication
+        /// </summary>
+        /// <param name="id">Identificator of the user who created the post</param>
+        /// <param name="postModel"></param>
+        /// <returns></returns>
         [Authorize]
         [HttpPut]
         public HttpResponseMessage EditPost(int id, [FromBody]PostsModel postModel)
@@ -84,7 +101,7 @@ namespace BlogWebAPI.Controllers
                                      select p).SingleOrDefault();
                     if (newPost != null)
                     {
-                        newPost.content = postModel.content;
+                        newPost.content = postModel.Content;
 
                         blogdb.Entry(newPost).State = EntityState.Modified;
                         blogdb.SaveChanges();
@@ -109,6 +126,11 @@ namespace BlogWebAPI.Controllers
             }
         }
 
+        /// <summary>
+        /// Method to delete your own publications
+        /// </summary>
+        /// <param name="id">Identificator of the user who created the post</param>
+        /// <returns></returns>
         [Authorize]
         [HttpDelete]
         public HttpResponseMessage DeletePost(int id)

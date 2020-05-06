@@ -4,13 +4,21 @@ namespace BlogWebAPI.Models
 {
     public class PostsModel
     {
-        public int id { get; set; }
+        //public int id { get; set; }
+
+        /// <summary>
+        /// Identificator of the user who created a post
+        /// </summary>
         [Required]
         [RegularExpression("^[0-9]*$", ErrorMessage = "This value must be numeric")]
-        public int idAuthor { get; set; }
+        public int IdAuthor { get; set; }
+
+        /// <summary>
+        /// Subject of post
+        /// </summary>
         [Required]
         [StringLength(200)]
-        public string content { get; set; }
+        public string Content { get; set; }
 
     }
 }

@@ -18,6 +18,10 @@ namespace BlogWebAPI.Controllers
             return int.Parse(loggedUserData.FindFirst("userID").Value);
         }
 
+        /// <summary>
+        /// Method to get the list of all registered users
+        /// </summary>
+        /// <returns></returns>
         [Authorize]
         [HttpGet]
         public IEnumerable<users> GetListOfUsers()
@@ -29,6 +33,11 @@ namespace BlogWebAPI.Controllers
             }
         }
 
+        /// <summary>
+        /// Method to create new users
+        /// </summary>
+        /// <param name="userModel"></param>
+        /// <returns></returns>
         [AllowAnonymous]
         [HttpPost]
         public HttpResponseMessage CreateUser([FromBody]UsersModel userModel)
@@ -63,6 +72,13 @@ namespace BlogWebAPI.Controllers
                                                     });
             }
         }
+
+        /// <summary>
+        /// Method to modify the data of a registered user
+        /// </summary>
+        /// <param name="id">Identificator of the user's account</param>
+        /// <param name="userModel"></param>
+        /// <returns></returns>
         [Authorize]
         [HttpPut]
         public HttpResponseMessage PutEditUser(int id, [FromBody]UsersModel userModel)
@@ -103,6 +119,11 @@ namespace BlogWebAPI.Controllers
             }
         }
 
+        /// <summary>
+        /// Method to cancel and delete the data of a registered user
+        /// </summary>
+        /// <param name="id">Identificator of the user's account</param>
+        /// <returns></returns>
         [Authorize]
         [HttpDelete]
         public HttpResponseMessage DeleteUser(int id)
