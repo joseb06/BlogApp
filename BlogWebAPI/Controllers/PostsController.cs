@@ -15,7 +15,7 @@ namespace BlogWebAPI.Controllers
     {
         readonly int loginUserId = new UsersController().GetLoginUserId();
 
-        [AllowAnonymous]
+        [Authorize]
         [Route("BlogApp/Users/{id}/Posts")]
         [HttpGet]
         public IEnumerable<Object> GetListOfPostsByUser(int id)
@@ -62,7 +62,12 @@ namespace BlogWebAPI.Controllers
             }
             catch (Exception e)
             {
-                return Request.CreateResponse(HttpStatusCode.BadRequest, e.Message);
+                return Request.CreateErrorResponse(HttpStatusCode.BadRequest,
+                                                    new HttpError
+                                                    {
+                                                        Message = "The Post could not be created",
+                                                        MessageDetail = string.Format(e.Message)
+                                                    });
 
             }
         }
@@ -95,7 +100,12 @@ namespace BlogWebAPI.Controllers
             }
             catch (Exception e)
             {
-                return Request.CreateResponse(HttpStatusCode.BadRequest, e.Message);
+                return Request.CreateErrorResponse(HttpStatusCode.BadRequest,
+                                                    new HttpError
+                                                    {
+                                                        Message = "The Post could not be updated",
+                                                        MessageDetail = string.Format(e.Message)
+                                                    });
             }
         }
 
@@ -127,7 +137,12 @@ namespace BlogWebAPI.Controllers
             }
             catch (Exception e)
             {
-                return Request.CreateResponse(HttpStatusCode.BadRequest, e.Message);
+                return Request.CreateErrorResponse(HttpStatusCode.BadRequest,
+                                                    new HttpError
+                                                    {
+                                                        Message = "The Post could not be deleted",
+                                                        MessageDetail = string.Format(e.Message)
+                                                    });
             }
         }
     }
