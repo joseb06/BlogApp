@@ -1,7 +1,5 @@
 ﻿using BlogDatabase.Models;
 using BlogWebAPI.Models;
-using Microsoft.Ajax.Utilities;
-using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Data;
@@ -10,13 +8,11 @@ using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Web.Http;
-using WebGrease.Css.Extensions;
 
 namespace BlogWebAPI.Controllers
 {
     public class CommentsController : ApiController
     {
-
         [AllowAnonymous]
         [Route("BlogApp/Posts/{id}")]
         [HttpGet]
@@ -60,7 +56,7 @@ namespace BlogWebAPI.Controllers
                         id = nextCommentId,
                         id_post = id,
                         id_commentarist = loginUserId,
-                        comment = commentsModel.comment
+                        comment = commentsModel.Comment
                     };
 
                     blogdb.Entry(newComment).State = EntityState.Added;
@@ -72,7 +68,12 @@ namespace BlogWebAPI.Controllers
             }
             catch (Exception e)
             {
-                return Request.CreateResponse(HttpStatusCode.BadRequest, e.Message);
+                return Request.CreateErrorResponse(HttpStatusCode.BadRequest,
+                                                    new HttpError
+                                                    {
+                                                        Message = "The comment could not be added",
+                                                        MessageDetail = string.Format(e.Message)
+                                                    });
 
             }
         }
@@ -91,7 +92,7 @@ namespace BlogWebAPI.Controllers
                                           select c).SingleOrDefault();
                     if (newComment != null)
                     {
-                        newComment.comment = commentModel.comment;
+                        newComment.comment = commentModel.Comment;
 
                         blogdb.Entry(newComment).State = EntityState.Modified;
                         blogdb.SaveChanges();
@@ -107,7 +108,12 @@ namespace BlogWebAPI.Controllers
             }
             catch (Exception e)
             {
-                return Request.CreateResponse(HttpStatusCode.BadRequest, e.Message);
+                return Request.CreateErrorResponse(HttpStatusCode.BadRequest,
+                                                    new HttpError
+                                                    {
+                                                        Message = "The comment could not be updated",
+                                                        MessageDetail = string.Format(e.Message)
+                                                    });
             }
         }
 
@@ -141,7 +147,12 @@ namespace BlogWebAPI.Controllers
             }
             catch (Exception e)
             {
-                return Request.CreateResponse(HttpStatusCode.BadRequest, e.Message);
+                return Request.CreateErrorResponse(HttpStatusCode.BadRequest,
+                                                    new HttpError
+                                                    {
+                                                        Message = "The comment could not be deleted",
+                                                        MessageDetail = string.Format(e.Message)
+                                                    });
             }
         }
     }
