@@ -1,4 +1,4 @@
-﻿using BlogWebAPI.Models;
+﻿using BlogWebAPI.Models.Users;
 using Microsoft.Owin.Security.OAuth;
 using System.Security.Claims;
 using System.Threading.Tasks;

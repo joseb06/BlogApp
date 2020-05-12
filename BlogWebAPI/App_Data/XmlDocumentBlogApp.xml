@@ -481,29 +481,12 @@
             </summary>
             <param name="documentPath">The physical path to XML document.</param>
         </member>
-        <member name="M:BlogWebAPI.Controllers.CommentsController.GetListOfPostsAndHisComments(System.Int32)">
-            <summary>
-            Method to get the list of all posts added by a specific user,
-            also the comments of that post
-            </summary>
-            <param name="id">Identificator of the user who created the post</param>
-            <returns></returns>
-        </member>
-        <member name="M:BlogWebAPI.Controllers.CommentsController.AddComment(System.Int32,BlogWebAPI.Models.CommentsModel)">
+        <member name="M:BlogWebAPI.Controllers.CommentsController.AddComment(System.Int32,BlogWebAPI.Models.Comments.CommentsModel)">
             <summary>
             Method to add a new comment to a post
             </summary>
             <param name="id">Identificator of the user who created the post</param>
-            <param name="commentsModel"></param>
-            <returns></returns>
-        </member>
-        <member name="M:BlogWebAPI.Controllers.CommentsController.EditComment(System.Int32,System.Int32,BlogWebAPI.Models.CommentsModel)">
-            <summary>
-            Method to modify the data in your own comment
-            </summary>
-            <param name="id">Identificator of the post</param>
-            <param name="id2">Identificator of the comment</param>
-            <param name="commentModel"></param>
+            <param name="comment"></param>
             <returns></returns>
         </member>
         <member name="M:BlogWebAPI.Controllers.CommentsController.DeleteComment(System.Int32,System.Int32)">
@@ -514,26 +497,28 @@
             <param name="id2">Identificator of the comment</param>
             <returns></returns>
         </member>
-        <member name="M:BlogWebAPI.Controllers.PostsController.GetListOfPostsByUser(System.Int32)">
+        <member name="M:BlogWebAPI.Controllers.CommentsController.EditComment(System.Int32,System.Int32,BlogWebAPI.Models.Comments.CommentsModel)">
             <summary>
-            Method to get the list of all posts added by a specific user
+            Method to modify the data in your own comment
+            </summary>
+            <param name="id">Identificator of the post</param>
+            <param name="id2">Identificator of the comment</param>
+            <param name="comment"></param>
+            <returns></returns>
+        </member>
+        <member name="M:BlogWebAPI.Controllers.CommentsController.GetListOfPostsAndHisComments(System.Int32)">
+            <summary>
+            Method to get the list of all posts added by a specific user,
+            also the comments of that post
             </summary>
             <param name="id">Identificator of the user who created the post</param>
             <returns></returns>
         </member>
-        <member name="M:BlogWebAPI.Controllers.PostsController.CreatePost(BlogWebAPI.Models.PostsModel)">
+        <member name="M:BlogWebAPI.Controllers.PostsController.CreatePost(BlogWebAPI.Models.Posts.PostsModel)">
             <summary>
             Method to create new post
             </summary>
-            <param name="postModel"></param>
-            <returns></returns>
-        </member>
-        <member name="M:BlogWebAPI.Controllers.PostsController.EditPost(System.Int32,BlogWebAPI.Models.PostsModel)">
-            <summary>
-            Method to modify the data in your own publication
-            </summary>
-            <param name="id">Identificator of the user who created the post</param>
-            <param name="postModel"></param>
+            <param name="post"></param>
             <returns></returns>
         </member>
         <member name="M:BlogWebAPI.Controllers.PostsController.DeletePost(System.Int32)">
@@ -543,25 +528,34 @@
             <param name="id">Identificator of the user who created the post</param>
             <returns></returns>
         </member>
-        <member name="M:BlogWebAPI.Controllers.UsersController.GetListOfUsers">
+        <member name="M:BlogWebAPI.Controllers.PostsController.EditPost(System.Int32,BlogWebAPI.Models.Posts.PostsModel)">
             <summary>
-            Method to get the list of all registered users
+            Method to modify the data in your own publication
             </summary>
+            <param name="id">Identificator of the user who created the post</param>
+            <param name="post"></param>
             <returns></returns>
         </member>
-        <member name="M:BlogWebAPI.Controllers.UsersController.CreateUser(BlogWebAPI.Models.UsersModel)">
+        <member name="M:BlogWebAPI.Controllers.PostsController.ListOfPostsByUser(System.Int32)">
+            <summary>
+            Method to get the list of all posts added by a specific user
+            </summary>
+            <param name="id">Identificator of the user who created the post</param>
+            <returns></returns>
+        </member>
+        <member name="M:BlogWebAPI.Controllers.UsersController.CreateUser(BlogWebAPI.Models.Users.UsersModel)">
             <summary>
             Method to create new users
             </summary>
-            <param name="userModel"></param>
+            <param name="user"></param>
             <returns></returns>
         </member>
-        <member name="M:BlogWebAPI.Controllers.UsersController.PutEditUser(System.Int32,BlogWebAPI.Models.UsersModel)">
+        <member name="M:BlogWebAPI.Controllers.UsersController.EditUser(System.Int32,BlogWebAPI.Models.Users.UsersModel)">
             <summary>
             Method to modify the data of a registered user
             </summary>
             <param name="id">Identificator of the user's account</param>
-            <param name="userModel"></param>
+            <param name="user"></param>
             <returns></returns>
         </member>
         <member name="M:BlogWebAPI.Controllers.UsersController.DeleteUser(System.Int32)">
@@ -571,32 +565,33 @@
             <param name="id">Identificator of the user's account</param>
             <returns></returns>
         </member>
-        <member name="P:BlogWebAPI.Models.CommentsModel.Comment">
+        <member name="M:BlogWebAPI.Controllers.UsersController.ListOfUsers">
+            <summary>
+            Method to get the list of all registered users
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="P:BlogWebAPI.Models.Comments.CommentsModel.Comment">
             <summary>
             Personal content made about the post
             </summary>
         </member>
-        <member name="P:BlogWebAPI.Models.PostsModel.IdAuthor">
-            <summary>
-            Identificator of the user who created a post
-            </summary>
-        </member>
-        <member name="P:BlogWebAPI.Models.PostsModel.Content">
+        <member name="P:BlogWebAPI.Models.Posts.PostsModel.Content">
             <summary>
             Subject of post
             </summary>
         </member>
-        <member name="P:BlogWebAPI.Models.UsersModel.UserName">
+        <member name="P:BlogWebAPI.Models.Users.UsersModel.UserName">
             <summary>
             This value describes the name of the user's account needed to sign in to the application
             </summary>
         </member>
-        <member name="P:BlogWebAPI.Models.UsersModel.Password">
+        <member name="P:BlogWebAPI.Models.Users.UsersModel.Password">
             <summary>
             This value represents the password of the user's account needed to sign in to the application
             </summary>
         </member>
-        <member name="P:BlogWebAPI.Models.UsersModel.Email">
+        <member name="P:BlogWebAPI.Models.Users.UsersModel.Email">
             <summary>
             This value represents the address of the user's email account
             </summary>

@@ -13,25 +13,35 @@ namespace BlogWebAPI.Areas.HelpPage.Controllers
     {
         private const string ErrorViewName = "Error";
 
+#pragma warning disable CS1591 // Missing XML comment for publicly visible type or member 'HelpController.HelpController()'
         public HelpController()
+#pragma warning restore CS1591 // Missing XML comment for publicly visible type or member 'HelpController.HelpController()'
             : this(GlobalConfiguration.Configuration)
         {
         }
 
+#pragma warning disable CS1591 // Missing XML comment for publicly visible type or member 'HelpController.HelpController(HttpConfiguration)'
         public HelpController(HttpConfiguration config)
+#pragma warning restore CS1591 // Missing XML comment for publicly visible type or member 'HelpController.HelpController(HttpConfiguration)'
         {
             Configuration = config;
         }
 
+#pragma warning disable CS1591 // Missing XML comment for publicly visible type or member 'HelpController.Configuration'
         public HttpConfiguration Configuration { get; private set; }
+#pragma warning restore CS1591 // Missing XML comment for publicly visible type or member 'HelpController.Configuration'
 
+#pragma warning disable CS1591 // Missing XML comment for publicly visible type or member 'HelpController.Index()'
         public ActionResult Index()
+#pragma warning restore CS1591 // Missing XML comment for publicly visible type or member 'HelpController.Index()'
         {
             ViewBag.DocumentationProvider = Configuration.Services.GetDocumentationProvider();
             return View(Configuration.Services.GetApiExplorer().ApiDescriptions);
         }
 
+#pragma warning disable CS1591 // Missing XML comment for publicly visible type or member 'HelpController.Api(string)'
         public ActionResult Api(string apiId)
+#pragma warning restore CS1591 // Missing XML comment for publicly visible type or member 'HelpController.Api(string)'
         {
             if (!String.IsNullOrEmpty(apiId))
             {
@@ -45,7 +55,9 @@ namespace BlogWebAPI.Areas.HelpPage.Controllers
             return View(ErrorViewName);
         }
 
+#pragma warning disable CS1591 // Missing XML comment for publicly visible type or member 'HelpController.ResourceModel(string)'
         public ActionResult ResourceModel(string modelName)
+#pragma warning restore CS1591 // Missing XML comment for publicly visible type or member 'HelpController.ResourceModel(string)'
         {
             if (!String.IsNullOrEmpty(modelName))
             {

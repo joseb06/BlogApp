@@ -1,7 +1,7 @@
 ﻿using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 
-namespace BlogWebAPI.Models
+namespace BlogWebAPI.Models.Users
 {
     public class UsersModel
     {

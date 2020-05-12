@@ -123,14 +123,18 @@ namespace BlogWebAPI.Areas.HelpPage
         /// </summary>
         public HashSet<string> ParameterNames { get; private set; }
 
+#pragma warning disable CS1591 // Missing XML comment for publicly visible type or member 'HelpPageSampleKey.ParameterType'
         public Type ParameterType { get; private set; }
+#pragma warning restore CS1591 // Missing XML comment for publicly visible type or member 'HelpPageSampleKey.ParameterType'
 
         /// <summary>
         /// Gets the <see cref="SampleDirection"/>.
         /// </summary>
         public SampleDirection? SampleDirection { get; private set; }
 
+#pragma warning disable CS1591 // Missing XML comment for publicly visible type or member 'HelpPageSampleKey.Equals(object)'
         public override bool Equals(object obj)
+#pragma warning restore CS1591 // Missing XML comment for publicly visible type or member 'HelpPageSampleKey.Equals(object)'
         {
             HelpPageSampleKey otherKey = obj as HelpPageSampleKey;
             if (otherKey == null)
@@ -146,7 +150,9 @@ namespace BlogWebAPI.Areas.HelpPage
                 ParameterNames.SetEquals(otherKey.ParameterNames);
         }
 
+#pragma warning disable CS1591 // Missing XML comment for publicly visible type or member 'HelpPageSampleKey.GetHashCode()'
         public override int GetHashCode()
+#pragma warning restore CS1591 // Missing XML comment for publicly visible type or member 'HelpPageSampleKey.GetHashCode()'
         {
             int hashCode = ControllerName.ToUpperInvariant().GetHashCode() ^ ActionName.ToUpperInvariant().GetHashCode();
             if (MediaType != null)

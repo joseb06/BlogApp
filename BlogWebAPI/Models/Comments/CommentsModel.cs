@@ -1,10 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Web;
+﻿using System.ComponentModel.DataAnnotations;
 
-namespace BlogWebAPI.Models
+namespace BlogWebAPI.Models.Comments
 {
     public class CommentsModel
     {
@@ -17,6 +13,6 @@ namespace BlogWebAPI.Models
         /// </summary>
         [Required]
         [StringLength(2000)]
-        public string Comment{ get; set; }
+        public string Comment { get; set; }
     }
 }

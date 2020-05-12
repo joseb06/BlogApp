@@ -2,7 +2,7 @@
 using System;
 using System.Linq;
 
-namespace BlogWebAPI.Models
+namespace BlogWebAPI.Models.Users
 {
     public class UserAuthentication : IDisposable
     {
