@@ -8,7 +8,9 @@ namespace BlogWebAPI.Services
     {
         readonly IPostManagerRepository repository;
         ErrorLogManager LogManager;
-        public PostsManagerServices() : this(new EntityPostManagerRepository())
+        //public PostsManagerServices() : this(new EntityPostManagerRepository())
+        //{ }
+        public PostsManagerServices()
         { }
         public PostsManagerServices(IPostManagerRepository repository)
         {

@@ -9,10 +9,10 @@ namespace BlogWebAPI.Controllers
     public class PostsController : ApiController
     {
         IPostsManagerServices services;
-        public PostsController()
-        {
-            this.services = new PostsManagerServices();
-        }
+        //public PostsController()
+        //{
+        //    this.services = new PostsManagerServices();
+        //}
         public PostsController(IPostsManagerServices services)
         {
             this.services = services;

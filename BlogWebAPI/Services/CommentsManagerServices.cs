@@ -8,10 +8,10 @@ namespace BlogWebAPI.Services
     {
         readonly ICommentsManagerRepository repository;
         ErrorLogManager LogManager;
-        public CommentsManagerServices(): this(new EntityCommentsManangerRepository())
-        {
+        //public CommentsManagerServices(): this(new EntityCommentsManangerRepository())
+        //{
                 
-        }
+        //}
         public CommentsManagerServices(ICommentsManagerRepository repository)
         {
             this.repository = repository;

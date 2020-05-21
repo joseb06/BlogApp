@@ -10,10 +10,10 @@ namespace BlogWebAPI.Controllers
     {
         private readonly IUserManagerService service;
 
-        public UsersController()
-        {
-            this.service = new UsersManagerServices();
-        }
+        //public UsersController()
+        //{
+        //    this.service = new UsersManagerServices();
+        //}
 
         public UsersController(IUserManagerService service)
         {

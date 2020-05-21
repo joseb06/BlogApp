@@ -9,9 +9,10 @@ namespace BlogWebAPI.Services
     {
         private readonly IUserManagerRepository repository;
         ErrorLogManager LogManager;
-        public UsersManagerServices() : this(new EntityUserManangerRepository())
+        //public UsersManagerServices() : this(new EntityUserManangerRepository())
+        //{ }
+        public UsersManagerServices()
         { }
-
         public UsersManagerServices(IUserManagerRepository repository)
         {
             this.repository = repository;

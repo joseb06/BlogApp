@@ -9,10 +9,10 @@ namespace BlogWebAPI.Controllers
     public class CommentsController : ApiController
     {
         ICommentsManagerServices services;
-        public CommentsController()
-        {
-            this.services = new CommentsManagerServices();
-        }
+        //public CommentsController()
+        //{
+        //    this.services = new CommentsManagerServices();
+        //}
         public CommentsController(ICommentsManagerServices services)
         {
             this.services = services;
