@@ -55,8 +55,7 @@ namespace BlogWebAPI.Services
         {
             try
             {
-                if(repository.Edit(id, userToEdit) == null)
-                    return false;
+                repository.Edit(id, userToEdit);
                 return true;
             }
             catch (Exception ex)

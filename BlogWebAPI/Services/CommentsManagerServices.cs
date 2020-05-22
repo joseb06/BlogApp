@@ -20,8 +20,7 @@ namespace BlogWebAPI.Services
         {
             try
             {
-                if(repository.Create(id, commentToCreate)== null) 
-                    return false;
+                repository.Create(id, commentToCreate);
                 return true;
             }
             catch(Exception ex) 
@@ -35,8 +34,7 @@ namespace BlogWebAPI.Services
         {
             try
             {
-                if(!repository.Delete(id, id2))
-                    return false;
+                repository.Delete(id, id2);
                 return true;
             }
             catch (Exception ex)
@@ -50,10 +48,7 @@ namespace BlogWebAPI.Services
         {
             try
             {
-                if (repository.Edit(id,id2,commentToEdit)==null)
-                {
-                    return false;
-                }
+                repository.Edit(id, id2, commentToEdit);
                 return true;
             }
             catch (Exception ex)

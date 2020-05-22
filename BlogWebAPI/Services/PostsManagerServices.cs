@@ -10,8 +10,7 @@ namespace BlogWebAPI.Services
         ErrorLogManager LogManager;
         //public PostsManagerServices() : this(new EntityPostManagerRepository())
         //{ }
-        public PostsManagerServices()
-        { }
+
         public PostsManagerServices(IPostManagerRepository repository)
         {
             this.repository = repository;
@@ -34,8 +33,7 @@ namespace BlogWebAPI.Services
         {
             try
             {
-                if(!repository.Delete(id))
-                    return false;
+                repository.Delete(id);
                 return true;
             }
             catch (Exception ex)
