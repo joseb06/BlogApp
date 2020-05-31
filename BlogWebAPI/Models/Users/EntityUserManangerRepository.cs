@@ -1,4 +1,4 @@
-﻿using BlogDatabase.Models;
+﻿using BlogDBSQLServer.Models;
 using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
@@ -7,64 +7,57 @@ namespace BlogWebAPI.Models.Users
 {
     public class EntityUserManangerRepository : IUserManagerRepository
     {
-        private readonly blogdbEntities blogdb = new blogdbEntities();
+        private readonly dbBlogEntities blogdb = new dbBlogEntities();
 
-        public users Create(UsersModel userToCreate)
+        public users Create(User userToCreate)
         {
-            int lastUserId = blogdb.users.OrderByDescending(u => u.id).First().id;
-            int nextUserId = lastUserId + 1;
-
-            users newUser = new users
+            var user = new users
             {
-                id = nextUserId,
-                userName = userToCreate.UserName,
-                password = userToCreate.Password,
-                email = userToCreate.Email
+                Username = userToCreate.Username,
+                Password = userToCreate.Password,
+                Email = userToCreate.Email
             };
-            blogdb.Entry(newUser).State = EntityState.Added;
+            blogdb.Entry(user).State = EntityState.Added;
             blogdb.SaveChanges();
 
-            return newUser;
+            return user;
         }
 
-        public bool Delete(int id)
+        public bool Delete(int userId)
         {
-            users newUser = (from u in blogdb.users
-                             where u.id == id
-                             select u).SingleOrDefault();
-            if (newUser == null)
+            var user = (from users in blogdb.users
+                        where users.Id == userId
+                        select users).SingleOrDefault();
+
+            if (user != null)
             {
-                return false;
-            }
-            blogdb.Entry(newUser).State = EntityState.Deleted;
-            blogdb.SaveChanges();
-
-            return true;
-        }
-
-        public users Edit(int id, UsersModel userToEdit)
-        {
-            users newUser = (from u in blogdb.users
-                             where u.id == id
-                             select u).SingleOrDefault();
-            if (newUser != null)
-            {
-                newUser.userName = userToEdit.UserName;
-                newUser.password = userToEdit.Password;
-                newUser.email = userToEdit.Email;
-
-                blogdb.Entry(newUser).State = EntityState.Modified;
+                blogdb.Entry(user).State = EntityState.Deleted;
                 blogdb.SaveChanges();
+                return true;
+            }
 
-                return newUser;
-            }
-            else
-            {
-                return null;
-            }
+            return false;
         }
 
-        public IEnumerable<object> ListOfUsers()
+        public users Edit(int userId, User userToEdit)
+        {
+            var user = (from users in blogdb.users
+                        where users.Id == userId
+                        select users).SingleOrDefault();
+
+            if (user != null)
+            {
+                user.Username = userToEdit.Username;
+                user.Password = userToEdit.Password;
+                user.Email = userToEdit.Email;
+
+                blogdb.Entry(user).State = EntityState.Modified;
+                blogdb.SaveChanges();
+            }
+            return user;
+        }
+
+        public IEnumerable<object> GetAllUsers()
         {
             return blogdb.users.ToList();
         }

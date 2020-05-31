@@ -1,83 +1,105 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
-using BlogWebAPI.Services;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Moq;
 using BlogWebAPI.Models.Posts;
+using System.Net;
+using BlogDBSQLServer.Models;
+using System.Collections.Generic;
+using Castle.Core.Internal;
 
 namespace BlogWebAPI.Services.Tests
 {
     [TestClass()]
     public class PostsManagerServicesTests
     {
-        private Mock<IPostManagerRepository> _mockRepositoryPosts;
+        private Mock<IPostManagerRepository> _mockRepository;
         private IPostsManagerServices _service;
 
         [TestInitialize()]
         public void Initialize()
         {
-            _mockRepositoryPosts = new Mock<IPostManagerRepository>();
-            _service = new PostsManagerServices(_mockRepositoryPosts.Object);
+            _mockRepository = new Mock<IPostManagerRepository>();
+            _service = new PostsManagerServices(_mockRepository.Object);
         }
 
         [TestMethod()]
-        public void CreateTest()
+        public void Create_ValidPostData_ReturnsHttpStatusOK()
         {
-            //Arrange
-            var post = new PostsModel
+            var post = new Post
             {
                 Content = "This is a test of a post"
             };
 
-            //Act
             var result = _service.Create(post);
 
-            //Assert
-            Assert.IsTrue(result);
+            Assert.AreEqual(HttpStatusCode.OK, result.StatusCode);
         }
 
         [TestMethod()]
-        public void DeleteTest()
+        public void Delete_ValidPostId_ReturnsHttpStatusOK()
         {
-            //Arrange
             int id = 1;
+            _mockRepository.Setup(p => p.Delete(id)).Returns(true);
 
-            //Act
             var result = _service.Delete(id);
 
-            //Assert
-            Assert.IsTrue(result);
+            Assert.AreEqual(HttpStatusCode.OK, result.StatusCode);
         }
 
         [TestMethod()]
-        public void EditTest()
+        public void Delete_InvalidPostId_ReturnsHttpStatusNotFound()
         {
-            //Arrange
+            int id = 16;
+            _mockRepository.Setup(p => p.Delete(id)).Returns(false);
+
+            var result = _service.Delete(id);
+
+            Assert.AreEqual(HttpStatusCode.NotFound, result.StatusCode);
+        }
+
+        [TestMethod()]
+        public void Edit_ValidPostIdAndData_ReturnsHttpStatusOK()
+        {
             int id = 2;
-            var post = new PostsModel
+            var post = new Post
             {
                 Content = "This is a test of a updated post"
             };
+            _mockRepository.Setup(p => p.Edit(id, post)).Returns(new posts());
 
-            //Act
             var result = _service.Edit(id,post);
 
-            //Assert
-            Assert.IsTrue(result);
+            Assert.AreEqual(HttpStatusCode.OK, result.StatusCode);
         }
 
         [TestMethod()]
-        public void ListOfPostsByUserTest()
+        public void Edit_InvalidPostIdAndValidPostData_ReturnsHttpStatusNotFound()
         {
-            //Arrange
-            int idAuthor=5;
-            //Act
-            var result = _service.ListOfPostsByUser(idAuthor);
-            //Assert
-            Assert.IsNotNull(result);
+            int id = 25;
+            var post = new Post
+            {
+                Content = "This is a test of a updated post"
+            };
+            _mockRepository.Setup(p => p.Edit(id, post)).Returns((posts)null);
+
+            var result = _service.Edit(id, post);
+
+            Assert.AreEqual(HttpStatusCode.NotFound, result.StatusCode);
+        }
+
+        [TestMethod()]
+        public void GetPostsByUser_ValidUserId_ReturnsANotNullList()
+        {
+            int id=1;
+            _mockRepository.Setup(p => p.GetPostsByUser(id)).
+                Returns(new List<object>()
+                {
+                    new { Id = 1, AuthorId = 1, Content = "first post" },
+                    new { Id = 2, AuthorId = 1, Content = "second post" }
+                });
+
+            var result = _service.GetPostsByUser(id);
+            
+            Assert.IsFalse(result.IsNullOrEmpty());
         }
     }
 }

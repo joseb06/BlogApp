@@ -8,7 +8,7 @@ namespace BlogWebAPI.Controllers
 {
     public class UsersController : ApiController
     {
-        private readonly IUserManagerService service;
+        private readonly IUserManagerService _service;
 
         //public UsersController()
         //{
@@ -17,7 +17,7 @@ namespace BlogWebAPI.Controllers
 
         public UsersController(IUserManagerService service)
         {
-            this.service = service;
+            _service = service;
         }
 
         /// <summary>
@@ -27,13 +27,10 @@ namespace BlogWebAPI.Controllers
         /// <returns></returns>
         [AllowAnonymous]
         [HttpPost]
-        public HttpResponseMessage CreateUser([FromBody]UsersModel user)
+        public HttpResponseMessage CreateUser([FromBody]User user)
         {
-            if (!service.Create(user))
-            {
-                return Request.CreateErrorResponse(HttpStatusCode.BadRequest, "The User was not created");
-            }
-            return Request.CreateResponse(HttpStatusCode.OK, "User was created successfully.");
+            var response = _service.Create(user);
+            return Request.CreateResponse(response.StatusCode, response.Message);
         }
 
         /// <summary>
@@ -44,14 +41,10 @@ namespace BlogWebAPI.Controllers
         /// <returns></returns>
         [Authorize]
         [HttpPut]
-        public HttpResponseMessage EditUser(int id, [FromBody]UsersModel user)
+        public HttpResponseMessage EditUser(int id, [FromBody]User user)
         {
-            if (!service.Edit(id, user))
-            {
-                return Request.CreateErrorResponse(HttpStatusCode.BadRequest, "User data cannot be updated");
-            }
-
-            return Request.CreateResponse(HttpStatusCode.OK, "User data was updated successfully.");
+            var response = _service.Edit(id, user);
+            return Request.CreateResponse(response.StatusCode, response.Message);
         }
 
         /// <summary>
@@ -63,11 +56,8 @@ namespace BlogWebAPI.Controllers
         [HttpDelete]
         public HttpResponseMessage DeleteUser(int id)
         {
-            if (!service.Delete(id))
-            {
-                return Request.CreateErrorResponse(HttpStatusCode.BadRequest, "User cannot be removed");
-            }
-            return Request.CreateResponse(HttpStatusCode.OK, "User was removed successfully.");
+            var response = _service.Delete(id);
+            return Request.CreateResponse(response.StatusCode,response.Message);
         }
 
         /// <summary>
@@ -78,12 +68,12 @@ namespace BlogWebAPI.Controllers
         [HttpGet]
         public HttpResponseMessage ListOfUsers()
         {
-            if (service.ListOfUsers() == null || !service.ListOfUsers().GetEnumerator().MoveNext())
+            var users = _service.GetAllUsers();
+            if (!users.GetEnumerator().MoveNext())
             {
-                return Request.CreateErrorResponse(HttpStatusCode.BadRequest, "Cannot display the list of Users");
+                return Request.CreateResponse(HttpStatusCode.OK, "ATTENTION! The list is empty");
             }
-
-            return Request.CreateResponse(HttpStatusCode.OK, service.ListOfUsers());
+            return Request.CreateResponse(HttpStatusCode.OK, users);
         }
     }
 }

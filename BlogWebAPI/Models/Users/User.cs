@@ -3,7 +3,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace BlogWebAPI.Models.Users
 {
-    public class UsersModel
+    public class User
     {
         //public int Id { get; set; }
 
@@ -12,7 +12,7 @@ namespace BlogWebAPI.Models.Users
         /// </summary>
         [Required]
         [MaxLength(50)]
-        public string UserName { get; set; }
+        public string Username { get; set; }
 
         /// <summary>
         /// This value represents the password of the user's account needed to sign in to the application

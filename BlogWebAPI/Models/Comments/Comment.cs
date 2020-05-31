@@ -2,7 +2,7 @@
 
 namespace BlogWebAPI.Models.Comments
 {
-    public class CommentsModel
+    public class Comment
     {
         //public int Id { get; set; }
         //public int Id_post { get; set; }
@@ -13,6 +13,6 @@ namespace BlogWebAPI.Models.Comments
         /// </summary>
         [Required]
         [StringLength(2000)]
-        public string Comment { get; set; }
+        public string Comments { get; set; }
     }
 }

@@ -8,14 +8,14 @@ namespace BlogWebAPI.Controllers
 {
     public class PostsController : ApiController
     {
-        IPostsManagerServices services;
+        private readonly IPostsManagerServices _services;
         //public PostsController()
         //{
         //    this.services = new PostsManagerServices();
         //}
         public PostsController(IPostsManagerServices services)
         {
-            this.services = services;
+            _services = services;
         }
 
         /// <summary>
@@ -25,11 +25,10 @@ namespace BlogWebAPI.Controllers
         /// <returns></returns>
         [Authorize]
         [HttpPost]
-        public HttpResponseMessage CreatePost([FromBody]PostsModel post)
+        public HttpResponseMessage CreatePost([FromBody]Post post)
         {
-            if (!services.Create(post))
-                return Request.CreateErrorResponse(HttpStatusCode.BadRequest, "The Post could not be created");
-            return Request.CreateResponse(HttpStatusCode.OK, "The Post was created successfully.");
+            var response = _services.Create(post);
+            return Request.CreateResponse(response.StatusCode, response.Message);
         }
 
         /// <summary>
@@ -42,9 +41,8 @@ namespace BlogWebAPI.Controllers
         [HttpDelete]
         public HttpResponseMessage DeletePost(int id)
         {
-            if (!services.Delete(id))
-                return Request.CreateErrorResponse(HttpStatusCode.BadRequest, "The Post could not be deleted");
-            return Request.CreateResponse(HttpStatusCode.OK, "The Post was deleted successfully.");
+            var response = _services.Delete(id);
+            return Request.CreateResponse(response.StatusCode, response.Message);
         }
 
         /// <summary>
@@ -56,11 +54,10 @@ namespace BlogWebAPI.Controllers
         [Authorize]
         [Route("BlogApp/Post/{id}")]
         [HttpPut]
-        public HttpResponseMessage EditPost(int id, [FromBody]PostsModel post)
+        public HttpResponseMessage EditPost(int id, [FromBody]Post post)
         {
-            if (!services.Edit(id, post))
-                return Request.CreateErrorResponse(HttpStatusCode.BadRequest, "The Post could not be updated");
-            return Request.CreateResponse(HttpStatusCode.OK, "The Post was updated successfully.");
+            var response = _services.Edit(id, post);
+            return Request.CreateResponse(response.StatusCode, response.Message);
         }
 
         /// <summary>
@@ -73,11 +70,12 @@ namespace BlogWebAPI.Controllers
         [HttpGet]
         public HttpResponseMessage ListOfPostsByUser(int id)
         {
-            var list = services.ListOfPostsByUser(id);
-
-            if (!list.GetEnumerator().MoveNext() || list == null)
-                return Request.CreateErrorResponse(HttpStatusCode.BadRequest, "The Post could not be shown");
-            return Request.CreateResponse(HttpStatusCode.OK, services.ListOfPostsByUser(id));
+            var post = _services.GetPostsByUser(id);
+            if (!post.GetEnumerator().MoveNext())
+            {
+                return Request.CreateResponse(HttpStatusCode.OK, "ATTENTION! The list is empty or the post does not exist");
+            }
+            return Request.CreateResponse(HttpStatusCode.OK, post);
         }
     }
 }

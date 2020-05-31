@@ -1,13 +1,13 @@
-﻿using BlogDatabase.Models;
+﻿using BlogDBSQLServer.Models;
 using System.Collections.Generic;
 
 namespace BlogWebAPI.Models.Users
 {
     public interface IUserManagerRepository
     {
-        users Create(UsersModel userToCreate);
-        users Edit(int id, UsersModel userToEdit);
-        bool Delete(int id);
-        IEnumerable<object> ListOfUsers();
+        users Create(User userToCreate);
+        users Edit(int userId, User userToEdit);
+        bool Delete(int userId);
+        IEnumerable<object> GetAllUsers();
     }
 }

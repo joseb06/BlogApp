@@ -1,4 +1,4 @@
-﻿using BlogDatabase.Models;
+﻿using BlogDBSQLServer.Models;
 using BlogWebAPI.Services;
 using System.Collections.Generic;
 using System.Data.Entity;
@@ -8,74 +8,83 @@ namespace BlogWebAPI.Models.Comments
 {
     public class EntityCommentsManangerRepository : ICommentsManagerRepository
     {
-        blogdbEntities blogdb = new blogdbEntities();
-        public comments Create(int id, CommentsModel commentToCreate)
+        readonly dbBlogEntities blogdb = new dbBlogEntities();
+        public comments Create(int postId, Comment commentToCreate)
         {
             int loginUserId = new UsersManagerServices().GetLoginUserId();
-            int lastCommentId = (!blogdb.comments.Any()) ? 0 : blogdb.comments.OrderByDescending(p => p.id).First().id;
-            int nextCommentId = lastCommentId + 1;
 
-            comments newComment = new comments
+            var post = blogdb.posts.Find(postId);
+            if (post != null)
             {
-                id = nextCommentId,
-                id_post = id,
-                id_commentarist = loginUserId,
-                comment = commentToCreate.Comment
-            };
+                var comment = new comments
+                {
+                    PostId = post.Id,
+                    CommentaristId = loginUserId,
+                    Comment = commentToCreate.Comments
+                };
 
-            blogdb.Entry(newComment).State = EntityState.Added;
-            blogdb.SaveChanges();
+                blogdb.Entry(comment).State = EntityState.Added;
+                blogdb.SaveChanges();
 
-            return newComment;
-        }
-
-        public bool Delete(int id, int id2)
-        {
-            int loginUserId = new UsersManagerServices().GetLoginUserId();
-            comments commentToDelete = (from c in blogdb.comments
-                                        where c.id == id2 && c.id_post == id && c.id_commentarist == loginUserId
-                                        select c).SingleOrDefault();
-            blogdb.Entry(commentToDelete).State = EntityState.Deleted;
-            blogdb.SaveChanges();
-            return true;
-        }
-
-        public comments Edit(int id,int id2, CommentsModel commentToEdit)
-        {
-            int loginUserId = new UsersManagerServices().GetLoginUserId();
-            comments newComment = (from c in blogdb.comments
-                                   where c.id_post == id && c.id == id2 && c.id_commentarist == loginUserId
-                                   select c).SingleOrDefault();
-            if (newComment == null)
-            {
-                return null;
+                return comment;
             }
-            newComment.comment = commentToEdit.Comment;
-
-            blogdb.Entry(newComment).State = EntityState.Modified;
-            blogdb.SaveChanges();
-            
-            return newComment;
+            return null;
         }
 
-        public IEnumerable<object> ListOfPostsAndComments(int id)
+        public bool Delete(int postId, int commentId)
         {
-            var postAndHisComments = from p in blogdb.posts
-                                     where p.id == id
-                                     select new
-                                     {
-                                         idPost = p.id,
-                                         p.content,
-                                         comments = (from c in blogdb.comments
-                                                     where c.id_post == id
-                                                     select new
-                                                     {
-                                                         userId = c.id_commentarist,
-                                                         c.comment
-                                                     }).ToList()
-                                     };
+            int loginUserId = new UsersManagerServices().GetLoginUserId();
+            var comment = (from comments in blogdb.comments
+                           where comments.Id == commentId &&
+                                 comments.PostId == postId &&
+                                 comments.CommentaristId == loginUserId
+                           select comments).SingleOrDefault();
+            
+            if (comment != null)
+            {
+                blogdb.Entry(comment).State = EntityState.Deleted;
+                blogdb.SaveChanges();
+                return true;
+            }
+            return false;
+        }
 
-            return postAndHisComments.ToArray();
+        public comments Edit(int postId, int commentId, Comment commentToEdit)
+        {
+            int loginUserId = new UsersManagerServices().GetLoginUserId();
+            var comment = (from comments in blogdb.comments
+                           where comments.PostId == postId &&
+                                 comments.Id == commentId &&
+                                 comments.CommentaristId == loginUserId
+                           select comments).SingleOrDefault();
+
+            if (comment != null)
+            {
+                comment.Comment = commentToEdit.Comments;
+
+                blogdb.Entry(comment).State = EntityState.Modified;
+                blogdb.SaveChanges();
+            }
+            return comment;
+        }
+
+        public IEnumerable<object> GetPostComments(int postId)
+        {
+            var postComments = from p in blogdb.posts
+                               where p.Id == postId
+                               select new
+                               {
+                                   idPost = p.Id,
+                                   p.Content,
+                                   comments = (from comments in blogdb.comments
+                                               where comments.PostId == postId
+                                               select new
+                                               {
+                                                   userId = comments.CommentaristId,
+                                                   comments.Comment
+                                               }).ToList()
+                               };
+            return postComments.ToArray();
         }
     }
 }

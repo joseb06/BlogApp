@@ -71,12 +71,12 @@
     <None Include="app.config" />
     <None Include="packages.config" />
   </ItemGroup>
+  <ItemGroup />
   <ItemGroup>
-    <Folder Include="Models\Comments\" />
-    <Folder Include="Models\Posts\" />
-    <Folder Include="Models\Users\" />
-  </ItemGroup>
-  <ItemGroup>
+    <ProjectReference Include="..\BlogDBSQLServer\BlogDBSQLServer.csproj">
+      <Project>{81aa3fe7-a743-45e6-abaf-6d8687122043}</Project>
+      <Name>BlogDBSQLServer</Name>
+    </ProjectReference>
     <ProjectReference Include="..\BlogWebAPI\BlogWebAPI.csproj">
       <Project>{84A17DC5-461C-4FAB-8906-84C75D87C38D}</Project>
       <Name>BlogWebAPI</Name>

@@ -2,7 +2,7 @@
 
 namespace BlogWebAPI.Models.Posts
 {
-    public class PostsModel
+    public class Post
     {
         //public int id { get; set; }
 

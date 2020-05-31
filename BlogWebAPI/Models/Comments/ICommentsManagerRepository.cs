@@ -1,13 +1,13 @@
-﻿using BlogDatabase.Models;
+﻿using BlogDBSQLServer.Models;
 using System.Collections.Generic;
 
 namespace BlogWebAPI.Models.Comments
 {
     public interface ICommentsManagerRepository
     {
-        comments Create(int id, CommentsModel commentToCreate);
-        comments Edit(int id, int id2, CommentsModel commentToEdit);
-        bool Delete(int id, int id2);
-        IEnumerable<object> ListOfPostsAndComments(int id);
+        comments Create(int postId, Comment commentToCreate);
+        comments Edit(int postId, int commentId, Comment commentToEdit);
+        bool Delete(int postId, int commentId);
+        IEnumerable<object> GetPostComments(int postId);
     }
 }

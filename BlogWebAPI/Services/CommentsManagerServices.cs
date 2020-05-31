@@ -1,74 +1,116 @@
-﻿using BlogWebAPI.Models.Comments;
+﻿using BlogWebAPI.Models;
+using BlogWebAPI.Models.Comments;
 using System;
 using System.Collections.Generic;
+using System.Net;
 
 namespace BlogWebAPI.Services
 {
     public class CommentsManagerServices : ICommentsManagerServices
     {
-        readonly ICommentsManagerRepository repository;
-        ErrorLogManager LogManager;
-        //public CommentsManagerServices(): this(new EntityCommentsManangerRepository())
-        //{
-                
-        //}
+        readonly ICommentsManagerRepository _repository;
+
         public CommentsManagerServices(ICommentsManagerRepository repository)
         {
-            this.repository = repository;
+            _repository = repository;
         }
-        public bool Create(int id, CommentsModel commentToCreate)
+        public ResponseModel Create(int postId, Comment commentToCreate)
         {
             try
             {
-                repository.Create(id, commentToCreate);
-                return true;
+                if (_repository.Create(postId, commentToCreate) != null)
+                {
+                    return new ResponseModel()
+                    {
+                        StatusCode = HttpStatusCode.OK,
+                        Message = "Comment was created successfully."
+                    };
+                }
+                else
+                {
+                    return new ResponseModel()
+                    {
+                        StatusCode = HttpStatusCode.NotFound,
+                        Message = string.Format("The post with the Id:{0} not exist to add a Comment.",postId)
+                    };
+                }
+
             }
             catch(Exception ex) 
             {
                 new ErrorLogManager().SaveError(this, ex);
-                return false;
+
+                return new ResponseModel()
+                {
+                    StatusCode = HttpStatusCode.InternalServerError,
+                    Message = "Comment cannot be created."
+                };
             }
         }
 
-        public bool Delete(int id, int id2)
+        public ResponseModel Delete(int postId, int commentId)
         {
             try
             {
-                repository.Delete(id, id2);
-                return true;
+                if (!_repository.Delete(postId, commentId))
+                {
+                    return new ResponseModel()
+                    {
+                        StatusCode = HttpStatusCode.NotFound,
+                        Message = string.Format("Does not exist a Comment with ID = {0}", commentId)
+                    };
+                }
+                return new ResponseModel()
+                {
+                    StatusCode = HttpStatusCode.OK,
+                    Message = "Comment was removed successfully."
+                };
             }
             catch (Exception ex)
             {
                 new ErrorLogManager().SaveError(this, ex);
-                return false;
+
+                return new ResponseModel()
+                {
+                    StatusCode = HttpStatusCode.InternalServerError,
+                    Message = "Comment cannot be removed."
+                };
             }
         }
 
-        public bool Edit(int id, int id2, CommentsModel commentToEdit)
+        public ResponseModel Edit(int postId, int commentId, Comment commentToEdit)
         {
             try
             {
-                repository.Edit(id, id2, commentToEdit);
-                return true;
+                if (_repository.Edit(postId, commentId, commentToEdit) == null)
+                {
+                    return new ResponseModel()
+                    {
+                        StatusCode = HttpStatusCode.NotFound,
+                        Message = string.Format("Does not exist a Comment with ID = {0}", commentId)
+                    };
+                }
+                return new ResponseModel()
+                {
+                    StatusCode = HttpStatusCode.OK,
+                    Message = "Comment was updated successfully"
+                };
             }
             catch (Exception ex)
             {
                 new ErrorLogManager().SaveError(this, ex);
-                return false;
+
+                return new ResponseModel()
+                {
+                    StatusCode = HttpStatusCode.InternalServerError,
+                    Message = "Comment cannot be updated"
+                };
             }
         }
 
-        public IEnumerable<object> ListOfPostsAndComments(int id)
+        public IEnumerable<object> GetPostComments(int postId)
         {
-            try
-            {
-                return repository.ListOfPostsAndComments(id);
-            }
-            catch (Exception ex)
-            {
-                new ErrorLogManager().SaveError(this, ex);
-                return null;
-            }
+            return _repository.GetPostComments(postId);
         }
     }
 }

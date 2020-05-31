@@ -1,6 +1,11 @@
-﻿using BlogWebAPI.Models.Users;
+﻿using BlogDBSQLServer.Models;
+using BlogWebAPI.Models.Users;
+using Castle.Core.Internal;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
+using System;
+using System.Collections.Generic;
+using System.Net;
 
 namespace BlogWebAPI.Services.Tests
 {
@@ -18,63 +23,92 @@ namespace BlogWebAPI.Services.Tests
         }
 
         [TestMethod()]
-        public void CreateTest()
+        public void Create_ValidUserData_ReturnsHttpStausOK()
         {
-            //Arrange
-            var user = new UsersModel()
+            var user = new User()
             {
-                UserName = "test",
+                Username = "test",
                 Password = "test231",
                 Email = "test@gmail.com"
             };
 
-            //Act
             var result = _service.Create(user);
 
-            //Assert
-            Assert.IsTrue(result);
+            Assert.AreEqual(HttpStatusCode.OK, result.StatusCode);
         }
 
         [TestMethod()]
-        public void DeleteTest()
+        public void Delete_ValidUserId_ReturnsHttpStausOK()
         {
-            //Arrange
-            int id = 102;
-            //Act
+            int id = 4;
+            _mockRepository.Setup(u => u.Delete(id)).Returns(true);
+
             var result = _service.Delete(id);
-            //Assert
-            Assert.IsTrue(result);
+
+            Assert.AreEqual(HttpStatusCode.OK, result.StatusCode);
+            
         }
 
         [TestMethod()]
-        public void EditTest()
+        public void Delete_InvalidUserId_ReturnsHttpStausNotFound()
         {
-            int idUser = 2;
-            //Arrange
-            var user = new UsersModel()
+            int id = 25;
+            _mockRepository.Setup(u => u.Delete(id)).Returns(false);
+
+            var result = _service.Delete(id);
+
+            Assert.AreEqual(HttpStatusCode.NotFound, result.StatusCode);
+
+        }
+
+        [TestMethod()]
+        public void Edit_ValidUserIdAndData_ReturnsHttpStatusOK()
+        {
+            int id = 4;
+            var user = new User()
             {
-                UserName = "testUpdated",
+                Username = "testUpdated",
                 Password = "test231_1",
                 Email = "testU@gmail.com"
             };
+            _mockRepository.Setup(u => u.Edit(id, user)).Returns(new users());
 
-            //Act
-            var result = _service.Edit(idUser, user);
+            var result = _service.Edit(id,user);
 
-            //Assert
-            Assert.IsTrue(result);
+            Assert.AreEqual(HttpStatusCode.OK,result.StatusCode);
         }
 
         [TestMethod()]
-        public void ListOfUsersTest()
+        public void Edit_InvalidUserIdAndValidUserData_ReturnsHttpStatusNotFound()
         {
-            //Arrange
+            int id = 12;
+            var user = new User()
+            {
+                Username = "testUpdated",
+                Password = "test231_1",
+                Email = "testU@gmail.com"
+            };
+            _mockRepository.Setup(u => u.Edit(id, user)).Returns((users)null);
 
-            //Act
-            var result = _service.ListOfUsers();
+            var result = _service.Edit(id, user);
 
-            //Assert
-            Assert.IsNotNull(result);
+            Assert.AreEqual(HttpStatusCode.NotFound, result.StatusCode);
+        }
+
+        [TestMethod()]
+        public void GetAllUsers_ReturnsANotNullList()
+        {
+            _mockRepository.Setup(u => u.GetAllUsers()).
+                Returns(new List<users>()
+                {
+                    new users(){Id=1,Username="pepe",Password="test123", Email="test@gmail.com"},
+                    new users(){Id=2,Username="pepe2",Password="test456", Email="test2@gmail.com"}
+                });
+
+
+            var result = _service.GetAllUsers();
+            
+            Assert.IsFalse(result.IsNullOrEmpty());
         }
     }
 }

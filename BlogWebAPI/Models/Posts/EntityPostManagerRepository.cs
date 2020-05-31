@@ -1,4 +1,4 @@
-﻿using BlogDatabase.Models;
+﻿using BlogDBSQLServer.Models;
 using BlogWebAPI.Services;
 using System.Collections.Generic;
 using System.Data.Entity;
@@ -8,68 +8,66 @@ namespace BlogWebAPI.Models.Posts
 {
     public class EntityPostManagerRepository : IPostManagerRepository
     {
-        readonly blogdbEntities blogdb = new blogdbEntities();
+        readonly dbBlogEntities blogdb = new dbBlogEntities();
         readonly int loginUserId = new UsersManagerServices().GetLoginUserId();
 
-        public posts Create(PostsModel postToCreate)
+        public posts Create(Post postToCreate)
         {
-            int lastPostId = (!blogdb.posts.Any()) ? 0 : blogdb.posts.OrderByDescending(p => p.id).First().id;
-            int nextPostId = lastPostId + 1;
-
-            posts newPost = new posts
+            var post = new posts
             {
-                id = nextPostId,
-                id_author = loginUserId,
-                content = postToCreate.Content
+                AuthorId = loginUserId,
+                Content = postToCreate.Content
             };
 
-            blogdb.Entry(newPost).State = EntityState.Added;
+            blogdb.Entry(post).State = EntityState.Added;
             blogdb.SaveChanges();
 
-            return newPost;
+            return post;
         }
 
-        public bool Delete(int id)
+        public bool Delete(int postId)
         {
-            posts postToDelete = (from p in blogdb.posts
-                                  where p.id == id && p.id_author == loginUserId
-                                  select p).SingleOrDefault();
-            if (postToDelete == null)
-                return false;
-
-            blogdb.Entry(postToDelete).State = EntityState.Deleted;
-            blogdb.SaveChanges();
-
-            return true;
-        }
-
-        public posts Edit(int id, PostsModel postToEdit)
-        {
-            posts newPost = (from p in blogdb.posts
-                             where p.id == id && p.id_author == loginUserId
-                             select p).SingleOrDefault();
-
-            newPost.content = postToEdit.Content;
-
-            blogdb.Entry(newPost).State = EntityState.Modified;
-            blogdb.SaveChanges();
-
-            return newPost;
-        }
-
-        public IEnumerable<object> ListOfPostsByUser(int id)
-        {
-            List<posts> userPost = (from p in blogdb.posts
-                                    where p.id_author == id
-                                    select p).ToList();
-            List<object> listOfPosts = new List<object>();
-
-            foreach (var item in userPost)
+            var post = (from p in blogdb.posts
+                        where p.Id == postId && p.AuthorId == loginUserId
+                        select p).SingleOrDefault();
+            
+            if (post != null)
             {
-                listOfPosts.Add(new { item.id, item.content });
+                blogdb.Entry(post).State = EntityState.Deleted;
+                blogdb.SaveChanges();
+                return true;
             }
+            return false;
+        }
 
-            return listOfPosts;
+        public posts Edit(int postId, Post postToEdit)
+        {
+            var post = (from p in blogdb.posts
+                        where p.Id == postId && p.AuthorId == loginUserId
+                        select p).SingleOrDefault();
+            
+            if (post != null)
+            {
+                post.Content = postToEdit.Content;
+
+                blogdb.Entry(post).State = EntityState.Modified;
+                blogdb.SaveChanges();
+            }
+            return post;
+        }
+
+        public IEnumerable<object> GetPostsByUser(int userId)
+        {
+            List<posts> postsByUser = (from p in blogdb.posts
+                                       where p.AuthorId == userId
+                                       select p).ToList();
+            var formattedPostsByUser = new List<object>();
+
+            foreach (var post in postsByUser)
+            {
+                formattedPostsByUser.Add(new { post.Id, post.Content });
+            }
+            return formattedPostsByUser;
         }
     }
 }

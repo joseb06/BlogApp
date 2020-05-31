@@ -1,4 +1,5 @@
-﻿using BlogWebAPI.Models.Users;
+﻿using BlogWebAPI.Models;
+using BlogWebAPI.Models.Users;
 using System.Collections.Generic;
 
 namespace BlogWebAPI.Services
@@ -6,9 +7,9 @@ namespace BlogWebAPI.Services
     public interface IUserManagerService
     {
         //bool Create(UsersModel userToCreate);
-        bool Create(UsersModel userToCreate);
-        bool Edit(int id, UsersModel userToEdit);
-        bool Delete(int id);
-        IEnumerable<object> ListOfUsers();
+        ResponseModel Create(User userToCreate);
+        ResponseModel Edit(int userId, User userToEdit);
+        ResponseModel Delete(int userId);
+        IEnumerable<object> GetAllUsers();
     }
 }

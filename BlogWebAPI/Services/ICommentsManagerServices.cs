@@ -1,13 +1,14 @@
-﻿using BlogWebAPI.Models.Comments;
+﻿using BlogWebAPI.Models;
+using BlogWebAPI.Models.Comments;
 using System.Collections.Generic;
 
 namespace BlogWebAPI.Services
 {
     public interface ICommentsManagerServices
     {
-        bool Create(int id,CommentsModel commentToCreate);
-        bool Edit(int id, int id2, CommentsModel commentToEdit);
-        bool Delete(int id, int id2);
-        IEnumerable<object> ListOfPostsAndComments(int id);
+        ResponseModel Create(int postId,Comment commentToCreate);
+        ResponseModel Edit(int postId, int commentId, Comment commentToEdit);
+        ResponseModel Delete(int postId, int commentId);
+        IEnumerable<object> GetPostComments(int postId);
     }
 }

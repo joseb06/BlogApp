@@ -481,7 +481,7 @@
             </summary>
             <param name="documentPath">The physical path to XML document.</param>
         </member>
-        <member name="M:BlogWebAPI.Controllers.CommentsController.AddComment(System.Int32,BlogWebAPI.Models.Comments.CommentsModel)">
+        <member name="M:BlogWebAPI.Controllers.CommentsController.AddComment(System.Int32,BlogWebAPI.Models.Comments.Comment)">
             <summary>
             Method to add a new comment to a post
             </summary>
@@ -497,7 +497,7 @@
             <param name="id2">Identificator of the comment</param>
             <returns></returns>
         </member>
-        <member name="M:BlogWebAPI.Controllers.CommentsController.EditComment(System.Int32,System.Int32,BlogWebAPI.Models.Comments.CommentsModel)">
+        <member name="M:BlogWebAPI.Controllers.CommentsController.EditComment(System.Int32,System.Int32,BlogWebAPI.Models.Comments.Comment)">
             <summary>
             Method to modify the data in your own comment
             </summary>
@@ -514,7 +514,7 @@
             <param name="id">Identificator of the user who created the post</param>
             <returns></returns>
         </member>
-        <member name="M:BlogWebAPI.Controllers.PostsController.CreatePost(BlogWebAPI.Models.Posts.PostsModel)">
+        <member name="M:BlogWebAPI.Controllers.PostsController.CreatePost(BlogWebAPI.Models.Posts.Post)">
             <summary>
             Method to create new post
             </summary>
@@ -528,7 +528,7 @@
             <param name="id">Identificator of the user who created the post</param>
             <returns></returns>
         </member>
-        <member name="M:BlogWebAPI.Controllers.PostsController.EditPost(System.Int32,BlogWebAPI.Models.Posts.PostsModel)">
+        <member name="M:BlogWebAPI.Controllers.PostsController.EditPost(System.Int32,BlogWebAPI.Models.Posts.Post)">
             <summary>
             Method to modify the data in your own publication
             </summary>
@@ -543,14 +543,14 @@
             <param name="id">Identificator of the user who created the post</param>
             <returns></returns>
         </member>
-        <member name="M:BlogWebAPI.Controllers.UsersController.CreateUser(BlogWebAPI.Models.Users.UsersModel)">
+        <member name="M:BlogWebAPI.Controllers.UsersController.CreateUser(BlogWebAPI.Models.Users.User)">
             <summary>
             Method to create new users
             </summary>
             <param name="user"></param>
             <returns></returns>
         </member>
-        <member name="M:BlogWebAPI.Controllers.UsersController.EditUser(System.Int32,BlogWebAPI.Models.Users.UsersModel)">
+        <member name="M:BlogWebAPI.Controllers.UsersController.EditUser(System.Int32,BlogWebAPI.Models.Users.User)">
             <summary>
             Method to modify the data of a registered user
             </summary>
@@ -571,27 +571,27 @@
             </summary>
             <returns></returns>
         </member>
-        <member name="P:BlogWebAPI.Models.Comments.CommentsModel.Comment">
+        <member name="P:BlogWebAPI.Models.Comments.Comment.Comments">
             <summary>
             Personal content made about the post
             </summary>
         </member>
-        <member name="P:BlogWebAPI.Models.Posts.PostsModel.Content">
+        <member name="P:BlogWebAPI.Models.Posts.Post.Content">
             <summary>
             Subject of post
             </summary>
         </member>
-        <member name="P:BlogWebAPI.Models.Users.UsersModel.UserName">
+        <member name="P:BlogWebAPI.Models.Users.User.Username">
             <summary>
             This value describes the name of the user's account needed to sign in to the application
             </summary>
         </member>
-        <member name="P:BlogWebAPI.Models.Users.UsersModel.Password">
+        <member name="P:BlogWebAPI.Models.Users.User.Password">
             <summary>
             This value represents the password of the user's account needed to sign in to the application
             </summary>
         </member>
-        <member name="P:BlogWebAPI.Models.Users.UsersModel.Email">
+        <member name="P:BlogWebAPI.Models.Users.User.Email">
             <summary>
             This value represents the address of the user's email account
             </summary>

@@ -1,4 +1,4 @@
-﻿using BlogDatabase.Models;
+﻿using BlogDBSQLServer.Models;
 using System;
 using System.Linq;
 
@@ -6,11 +6,12 @@ namespace BlogWebAPI.Models.Users
 {
     public class UserAuthentication : IDisposable
     {
-        readonly blogdbEntities blogdb = new blogdbEntities();
+        readonly dbBlogEntities blogdb = new dbBlogEntities();
+
         public users AuthenticateUser(string username, string password)
         {
-            return blogdb.users.FirstOrDefault(u => u.userName == username &&
-                                                    u.password == password);
+            return blogdb.users.FirstOrDefault(u => u.Username == username &&
+                                                    u.Password == password);
         }
         public void Dispose()
         {

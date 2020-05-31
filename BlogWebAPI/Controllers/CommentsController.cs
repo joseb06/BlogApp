@@ -8,14 +8,14 @@ namespace BlogWebAPI.Controllers
 {
     public class CommentsController : ApiController
     {
-        ICommentsManagerServices services;
+        private readonly ICommentsManagerServices _services;
         //public CommentsController()
         //{
         //    this.services = new CommentsManagerServices();
         //}
         public CommentsController(ICommentsManagerServices services)
         {
-            this.services = services;
+            _services = services;
         }
         /// <summary>
         /// Method to add a new comment to a post
@@ -25,13 +25,10 @@ namespace BlogWebAPI.Controllers
         /// <returns></returns>
         [Authorize]
         [HttpPost]
-        public HttpResponseMessage AddComment(int id, [FromBody]CommentsModel comment)
+        public HttpResponseMessage AddComment(int id, [FromBody]Comment comment)
         {
-            if (!services.Create(id,comment))
-            {
-                return Request.CreateErrorResponse(HttpStatusCode.BadRequest, "The comment could not be added");
-            }
-            return Request.CreateResponse(HttpStatusCode.OK, "Your comment was added successfully.");
+            var response = _services.Create(id, comment);
+            return Request.CreateResponse(response.StatusCode, response.Message);
         }
 
         /// <summary>
@@ -45,11 +42,8 @@ namespace BlogWebAPI.Controllers
         [HttpDelete]
         public HttpResponseMessage DeleteComment(int id, int id2)
         {
-            if (!services.Delete(id,id2))
-            {
-                return Request.CreateErrorResponse(HttpStatusCode.BadRequest, "The comment could not be deleted");
-            }
-            return Request.CreateResponse(HttpStatusCode.OK,"The comment was deleted successfully.");
+            var response = _services.Delete(id, id2);
+            return Request.CreateResponse(response.StatusCode, response.Message);
         }
 
         /// <summary>
@@ -62,13 +56,10 @@ namespace BlogWebAPI.Controllers
         [Authorize]
         [Route("BlogApp/Posts/{id}/Comments/{id2}")]
         [HttpPut]
-        public HttpResponseMessage EditComment(int id, int id2, [FromBody]CommentsModel comment)
+        public HttpResponseMessage EditComment(int id, int id2, [FromBody]Comment comment)
         {
-            if (!services.Edit(id,id2,comment))
-            {
-                return Request.CreateErrorResponse(HttpStatusCode.BadRequest, "The comment could not be updated");
-            }
-            return Request.CreateResponse(HttpStatusCode.OK, "Your Comment was updated successfully.");
+            var response = _services.Edit(id, id2, comment);
+            return Request.CreateResponse(response.StatusCode, response.Message);
         }
 
         /// <summary>
@@ -82,11 +73,12 @@ namespace BlogWebAPI.Controllers
         [HttpGet]
         public HttpResponseMessage GetListOfPostsAndHisComments(int id)
         {
-            var list = services.ListOfPostsAndComments(id);
-            
-            if(!list.GetEnumerator().MoveNext() || list == null)
-                    return Request.CreateErrorResponse(HttpStatusCode.BadRequest, "The Post could not be shown");
-            return Request.CreateResponse(HttpStatusCode.OK, services.ListOfPostsAndComments(id));
+            var comment = _services.GetPostComments(id);
+            if (!comment.GetEnumerator().MoveNext())
+            {
+                return Request.CreateResponse(HttpStatusCode.OK, "ATTENTION! The list is empty or the post does not exist");
+            }
+            return Request.CreateResponse(HttpStatusCode.OK, comment);
         }
     }
 }

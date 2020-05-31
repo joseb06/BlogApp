@@ -1,13 +1,13 @@
-﻿using BlogDatabase.Models;
+﻿using BlogDBSQLServer.Models;
 using System.Collections.Generic;
 
 namespace BlogWebAPI.Models.Posts
 {
     public interface IPostManagerRepository
     {
-        posts Create(PostsModel userToCreate);
-        posts Edit(int id, PostsModel userToEdit);
-        bool Delete(int id);
-        IEnumerable<object> ListOfPostsByUser(int id);
+        posts Create(Post userToCreate);
+        posts Edit(int postId, Post userToEdit);
+        bool Delete(int postId);
+        IEnumerable<object> GetPostsByUser(int userId);
     }
 }
