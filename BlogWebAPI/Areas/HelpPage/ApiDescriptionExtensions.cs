@@ -5,7 +5,9 @@ using System.Web.Http.Description;
 
 namespace BlogWebAPI.Areas.HelpPage
 {
+#pragma warning disable CS1591 // Missing XML comment for publicly visible type or member 'ApiDescriptionExtensions'
     public static class ApiDescriptionExtensions
+#pragma warning restore CS1591 // Missing XML comment for publicly visible type or member 'ApiDescriptionExtensions'
     {
         /// <summary>
         /// Generates an URI-friendly ID for the <see cref="ApiDescription"/>. E.g. "Get-Values-id_name" instead of "GetValues/{id}?name={name}"

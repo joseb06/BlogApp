@@ -1,10 +1,5 @@
-﻿using BlogDatabase.Models;
-using BlogWebAPI.Models;
-using System;
-using System.Collections.Generic;
-using System.Data;
-using System.Data.Entity;
-using System.Linq;
+﻿using BlogWebAPI.Models.Posts;
+using BlogWebAPI.Services;
 using System.Net;
 using System.Net.Http;
 using System.Web.Http;
@@ -13,122 +8,74 @@ namespace BlogWebAPI.Controllers
 {
     public class PostsController : ApiController
     {
-        readonly int loginUserId = new UsersController().GetLoginUserId();
-
-        [AllowAnonymous]
-        [Route("BlogApp/Users/{id}/Posts")]
-        [HttpGet]
-        public IEnumerable<Object> GetListOfPostsByUser(int id)
+        private readonly IPostsManagerServices _services;
+        //public PostsController()
+        //{
+        //    this.services = new PostsManagerServices();
+        //}
+        public PostsController(IPostsManagerServices services)
         {
-            using (var blogdb = new blogdbEntities())
-            {
-                List<posts> userPost = (from p in blogdb.posts
-                                        where p.id_author == id
-                                        select p).ToList();
-                List<object> listOfPosts = new List<object>();
-
-                foreach (var item in userPost)
-                {
-                    listOfPosts.Add(new { item.id, item.content });
-                }
-                return listOfPosts;
-            }
+            _services = services;
         }
 
+        /// <summary>
+        /// Method to create new post
+        /// </summary>
+        /// <param name="post"></param>
+        /// <returns></returns>
         [Authorize]
         [HttpPost]
-        public HttpResponseMessage CreatePost([FromBody]PostsModel postModel)
+        public HttpResponseMessage CreatePost([FromBody]Post post)
         {
-            try
-            {
-                using (var blogdb = new blogdbEntities())
-                {
-                    int lastPostId = (!blogdb.posts.Any()) ? 0 : blogdb.posts.OrderByDescending(p => p.id).First().id;
-                    int nextPostId = lastPostId + 1;
-
-                    posts newPost = new posts
-                    {
-                        id = nextPostId,
-                        id_author = loginUserId,
-                        content = postModel.content
-                    };
-
-                    blogdb.Entry(newPost).State = EntityState.Added;
-                    blogdb.SaveChanges();
-
-                    return Request.CreateResponse(HttpStatusCode.OK, "The Post was created successfully.");
-
-                }
-            }
-            catch (Exception e)
-            {
-                return Request.CreateResponse(HttpStatusCode.BadRequest, e.Message);
-
-            }
-        }
-        [Authorize]
-        [HttpPut]
-        public HttpResponseMessage EditPost(int id, [FromBody]PostsModel postModel)
-        {
-            try
-            {
-                using (var blogdb = new blogdbEntities())
-                {
-                    posts newPost = (from p in blogdb.posts
-                                     where p.id == id && p.id_author == loginUserId
-                                     select p).SingleOrDefault();
-                    if (newPost != null)
-                    {
-                        newPost.content = postModel.content;
-
-                        blogdb.Entry(newPost).State = EntityState.Modified;
-                        blogdb.SaveChanges();
-
-                        return Request.CreateResponse(HttpStatusCode.OK, "The Post was updated successfully.");
-                    }
-                    else
-                    {
-                        return Request.CreateErrorResponse(HttpStatusCode.NotFound,
-                        "The Post with Id: " + id.ToString() + " not found to update");
-                    }
-                }
-            }
-            catch (Exception e)
-            {
-                return Request.CreateResponse(HttpStatusCode.BadRequest, e.Message);
-            }
+            var response = _services.Create(post);
+            return Request.CreateResponse(response.StatusCode, response.Message);
         }
 
+        /// <summary>
+        /// Method to delete your own publications
+        /// </summary>
+        /// <param name="id">Identificator of the user who created the post</param>
+        /// <returns></returns>
         [Authorize]
+        [Route("BlogApp/PostD/{id}")]
         [HttpDelete]
         public HttpResponseMessage DeletePost(int id)
         {
-            try
-            {
-                using (var blogdb = new blogdbEntities())
-                {
-                    posts postToDelete = (from p in blogdb.posts
-                                          where p.id == id && p.id_author == loginUserId
-                                          select p).SingleOrDefault();
-                    if (postToDelete != null)
-                    {
-                        blogdb.Entry(postToDelete).State = EntityState.Deleted;
-                        blogdb.SaveChanges();
+            var response = _services.Delete(id);
+            return Request.CreateResponse(response.StatusCode, response.Message);
+        }
 
-                        return Request.CreateResponse(HttpStatusCode.OK,
-                            "The Post was deleted successfully.");
-                    }
-                    else
-                    {
-                        return Request.CreateErrorResponse(HttpStatusCode.NotFound,
-                        "The Post with Id " + id.ToString() + " not found to delete");
-                    }
-                }
-            }
-            catch (Exception e)
+        /// <summary>
+        /// Method to modify the data in your own publication
+        /// </summary>
+        /// <param name="id">Identificator of the user who created the post</param>
+        /// <param name="post"></param>
+        /// <returns></returns>
+        [Authorize]
+        [Route("BlogApp/Post/{id}")]
+        [HttpPut]
+        public HttpResponseMessage EditPost(int id, [FromBody]Post post)
+        {
+            var response = _services.Edit(id, post);
+            return Request.CreateResponse(response.StatusCode, response.Message);
+        }
+
+        /// <summary>
+        /// Method to get the list of all posts added by a specific user
+        /// </summary>
+        /// <param name="id">Identificator of the user who created the post</param>
+        /// <returns></returns>
+        [Authorize]
+        [Route("BlogApp/Users/{id}/Posts")]
+        [HttpGet]
+        public HttpResponseMessage ListOfPostsByUser(int id)
+        {
+            var post = _services.GetPostsByUser(id);
+            if (!post.GetEnumerator().MoveNext())
             {
-                return Request.CreateResponse(HttpStatusCode.BadRequest, e.Message);
+                return Request.CreateResponse(HttpStatusCode.OK, "ATTENTION! The list is empty or the post does not exist");
             }
+            return Request.CreateResponse(HttpStatusCode.OK, post);
         }
     }
 }

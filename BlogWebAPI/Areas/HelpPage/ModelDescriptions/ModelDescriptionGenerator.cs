@@ -86,7 +86,9 @@ namespace BlogWebAPI.Areas.HelpPage.ModelDescriptions
 
         private Lazy<IModelDocumentationProvider> _documentationProvider;
 
+#pragma warning disable CS1591 // Missing XML comment for publicly visible type or member 'ModelDescriptionGenerator.ModelDescriptionGenerator(HttpConfiguration)'
         public ModelDescriptionGenerator(HttpConfiguration config)
+#pragma warning restore CS1591 // Missing XML comment for publicly visible type or member 'ModelDescriptionGenerator.ModelDescriptionGenerator(HttpConfiguration)'
         {
             if (config == null)
             {
@@ -97,7 +99,9 @@ namespace BlogWebAPI.Areas.HelpPage.ModelDescriptions
             GeneratedModels = new Dictionary<string, ModelDescription>(StringComparer.OrdinalIgnoreCase);
         }
 
+#pragma warning disable CS1591 // Missing XML comment for publicly visible type or member 'ModelDescriptionGenerator.GeneratedModels'
         public Dictionary<string, ModelDescription> GeneratedModels { get; private set; }
+#pragma warning restore CS1591 // Missing XML comment for publicly visible type or member 'ModelDescriptionGenerator.GeneratedModels'
 
         private IModelDocumentationProvider DocumentationProvider
         {
@@ -107,7 +111,9 @@ namespace BlogWebAPI.Areas.HelpPage.ModelDescriptions
             }
         }
 
+#pragma warning disable CS1591 // Missing XML comment for publicly visible type or member 'ModelDescriptionGenerator.GetOrCreateModelDescription(Type)'
         public ModelDescription GetOrCreateModelDescription(Type modelType)
+#pragma warning restore CS1591 // Missing XML comment for publicly visible type or member 'ModelDescriptionGenerator.GetOrCreateModelDescription(Type)'
         {
             if (modelType == null)
             {

@@ -7,6 +7,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BlogWebAPI", "BlogWebAPI\Bl
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BlogDatabase", "BlogDatabase\BlogDatabase.csproj", "{5F2C7740-61F7-4207-95FD-C7F1E45F75B7}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BlogWebAPI.Tests", "BlogWebAPI.Tests\BlogWebAPI.Tests.csproj", "{0BA4B217-BB92-468A-A73B-C8156DCFFCAB}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BlogDBSQLServer", "BlogDBSQLServer\BlogDBSQLServer.csproj", "{81AA3FE7-A743-45E6-ABAF-6D8687122043}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -21,6 +25,14 @@ Global
 		{5F2C7740-61F7-4207-95FD-C7F1E45F75B7}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{5F2C7740-61F7-4207-95FD-C7F1E45F75B7}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{5F2C7740-61F7-4207-95FD-C7F1E45F75B7}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0BA4B217-BB92-468A-A73B-C8156DCFFCAB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0BA4B217-BB92-468A-A73B-C8156DCFFCAB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0BA4B217-BB92-468A-A73B-C8156DCFFCAB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0BA4B217-BB92-468A-A73B-C8156DCFFCAB}.Release|Any CPU.Build.0 = Release|Any CPU
+		{81AA3FE7-A743-45E6-ABAF-6D8687122043}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{81AA3FE7-A743-45E6-ABAF-6D8687122043}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{81AA3FE7-A743-45E6-ABAF-6D8687122043}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{81AA3FE7-A743-45E6-ABAF-6D8687122043}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

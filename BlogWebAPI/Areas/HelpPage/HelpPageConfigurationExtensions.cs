@@ -16,7 +16,9 @@ using System.Web.Http.Description;
 
 namespace BlogWebAPI.Areas.HelpPage
 {
+#pragma warning disable CS1591 // Missing XML comment for publicly visible type or member 'HelpPageConfigurationExtensions'
     public static class HelpPageConfigurationExtensions
+#pragma warning restore CS1591 // Missing XML comment for publicly visible type or member 'HelpPageConfigurationExtensions'
     {
         private const string ApiModelPrefix = "MS_HelpPageApiModel_";
 

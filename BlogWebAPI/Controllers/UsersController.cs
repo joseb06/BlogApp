@@ -1,130 +1,79 @@
-﻿using BlogDatabase.Models;
-using BlogWebAPI.Models;
-using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using BlogWebAPI.Models.Users;
+using BlogWebAPI.Services;
 using System.Net;
 using System.Net.Http;
-using System.Web;
 using System.Web.Http;
 
 namespace BlogWebAPI.Controllers
 {
     public class UsersController : ApiController
     {
-        [NonAction]
-        public int GetLoginUserId()
+        private readonly IUserManagerService _service;
+
+        //public UsersController()
+        //{
+        //    this.service = new UsersManagerServices();
+        //}
+
+        public UsersController(IUserManagerService service)
         {
-            var loggedUserData = System.Security.Claims.ClaimsPrincipal.Current;
-            return int.Parse(loggedUserData.FindFirst("userID").Value);
+            _service = service;
         }
 
-        [Authorize]
-        [HttpGet]
-        public IEnumerable<users> GetListOfUsers()
-        {
-            using (var blogdb = new blogdbEntities())
-            {
-                var listAllUsers = blogdb.users.ToList();
-                return listAllUsers;
-            }
-        }
-
+        /// <summary>
+        /// Method to create new users
+        /// </summary>
+        /// <param name="user"></param>
+        /// <returns></returns>
         [AllowAnonymous]
         [HttpPost]
-        public HttpResponseMessage CreateUser([FromBody]UsersModel userModel)
+        public HttpResponseMessage CreateUser([FromBody]User user)
         {
-            try
-            {
-                using (var blogdb = new blogdbEntities())
-                {
-                    int lastUserId = blogdb.users.OrderByDescending(u => u.id).First().id;
-                    int nextUserId = lastUserId + 1;
-                    users newUser = new users
-                    {
-                        id = nextUserId,
-                        userName = userModel.userName,
-                        password = userModel.password,
-                        email = userModel.email
-                    };
-
-                    blogdb.Entry(newUser).State = System.Data.Entity.EntityState.Added;
-                    blogdb.SaveChanges();
-
-                    return Request.CreateResponse(HttpStatusCode.OK, "User was created successfully.");
-                }
-            }
-            catch (Exception e)
-            {
-                return Request.CreateResponse(HttpStatusCode.BadRequest, e.Message);
-
-            }
+            var response = _service.Create(user);
+            return Request.CreateResponse(response.StatusCode, response.Message);
         }
+
+        /// <summary>
+        /// Method to modify the data of a registered user
+        /// </summary>
+        /// <param name="id">Identificator of the user's account</param>
+        /// <param name="user"></param>
+        /// <returns></returns>
         [Authorize]
         [HttpPut]
-        public HttpResponseMessage PutEditUser(int id, [FromBody]UsersModel userModel)
+        public HttpResponseMessage EditUser(int id, [FromBody]User user)
         {
-            try
-            {
-                using (var blogdb = new blogdbEntities())
-                {
-                    users newUser = (from u in blogdb.users
-                                     where u.id == id
-                                     select u).SingleOrDefault();
-                    if (newUser != null)
-                    {
-                        newUser.userName = userModel.userName;
-                        newUser.password = userModel.password;
-                        newUser.email = userModel.email;
-
-                        blogdb.Entry(newUser).State = System.Data.Entity.EntityState.Modified;
-                        blogdb.SaveChanges();
-
-                        return Request.CreateResponse(HttpStatusCode.OK, "User data was updated successfully.");
-                    }
-                    else
-                    {
-                        return Request.CreateErrorResponse(HttpStatusCode.NotFound,
-                        "User with Id " + id.ToString() + " not found to update");
-                    }
-                }
-            }
-            catch (Exception e)
-            {
-                return Request.CreateResponse(HttpStatusCode.BadRequest, e.Message);
-            }
+            var response = _service.Edit(id, user);
+            return Request.CreateResponse(response.StatusCode, response.Message);
         }
 
+        /// <summary>
+        /// Method to cancel and delete the data of a registered user
+        /// </summary>
+        /// <param name="id">Identificator of the user's account</param>
+        /// <returns></returns>
         [Authorize]
         [HttpDelete]
         public HttpResponseMessage DeleteUser(int id)
         {
-            try
-            {
-                using (var blogdb = new blogdbEntities())
-                {
-                    users newUser = (from u in blogdb.users
-                                     where u.id == id
-                                     select u).SingleOrDefault();
-                    if (newUser != null)
-                    {
-                        blogdb.Entry(newUser).State = System.Data.Entity.EntityState.Deleted;
-                        blogdb.SaveChanges();
+            var response = _service.Delete(id);
+            return Request.CreateResponse(response.StatusCode,response.Message);
+        }
 
-                        return Request.CreateResponse(HttpStatusCode.OK,
-                            "The User data was deleted successfully.");
-                    }
-                    else
-                    {
-                        return Request.CreateErrorResponse(HttpStatusCode.NotFound,
-                        "User with Id " + id.ToString() + " not found to delete");
-                    }
-                }
-            }
-            catch (Exception e)
+        /// <summary>
+        /// Method to get the list of all registered users
+        /// </summary>
+        /// <returns></returns>
+        [Authorize]
+        [HttpGet]
+        public HttpResponseMessage ListOfUsers()
+        {
+            var users = _service.GetAllUsers();
+            if (!users.GetEnumerator().MoveNext())
             {
-                return Request.CreateResponse(HttpStatusCode.BadRequest, e.Message);
+                return Request.CreateResponse(HttpStatusCode.OK, "ATTENTION! The list is empty");
             }
+            return Request.CreateResponse(HttpStatusCode.OK, users);
         }
     }
 }

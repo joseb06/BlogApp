@@ -35,19 +35,25 @@ namespace BlogWebAPI.Areas.HelpPage
             _documentNavigator = xpath.CreateNavigator();
         }
 
+#pragma warning disable CS1591 // Missing XML comment for publicly visible type or member 'XmlDocumentationProvider.GetDocumentation(HttpControllerDescriptor)'
         public string GetDocumentation(HttpControllerDescriptor controllerDescriptor)
+#pragma warning restore CS1591 // Missing XML comment for publicly visible type or member 'XmlDocumentationProvider.GetDocumentation(HttpControllerDescriptor)'
         {
             XPathNavigator typeNode = GetTypeNode(controllerDescriptor.ControllerType);
             return GetTagValue(typeNode, "summary");
         }
 
+#pragma warning disable CS1591 // Missing XML comment for publicly visible type or member 'XmlDocumentationProvider.GetDocumentation(HttpActionDescriptor)'
         public virtual string GetDocumentation(HttpActionDescriptor actionDescriptor)
+#pragma warning restore CS1591 // Missing XML comment for publicly visible type or member 'XmlDocumentationProvider.GetDocumentation(HttpActionDescriptor)'
         {
             XPathNavigator methodNode = GetMethodNode(actionDescriptor);
             return GetTagValue(methodNode, "summary");
         }
 
+#pragma warning disable CS1591 // Missing XML comment for publicly visible type or member 'XmlDocumentationProvider.GetDocumentation(HttpParameterDescriptor)'
         public virtual string GetDocumentation(HttpParameterDescriptor parameterDescriptor)
+#pragma warning restore CS1591 // Missing XML comment for publicly visible type or member 'XmlDocumentationProvider.GetDocumentation(HttpParameterDescriptor)'
         {
             ReflectedHttpParameterDescriptor reflectedParameterDescriptor = parameterDescriptor as ReflectedHttpParameterDescriptor;
             if (reflectedParameterDescriptor != null)
@@ -67,13 +73,17 @@ namespace BlogWebAPI.Areas.HelpPage
             return null;
         }
 
+#pragma warning disable CS1591 // Missing XML comment for publicly visible type or member 'XmlDocumentationProvider.GetResponseDocumentation(HttpActionDescriptor)'
         public string GetResponseDocumentation(HttpActionDescriptor actionDescriptor)
+#pragma warning restore CS1591 // Missing XML comment for publicly visible type or member 'XmlDocumentationProvider.GetResponseDocumentation(HttpActionDescriptor)'
         {
             XPathNavigator methodNode = GetMethodNode(actionDescriptor);
             return GetTagValue(methodNode, "returns");
         }
 
+#pragma warning disable CS1591 // Missing XML comment for publicly visible type or member 'XmlDocumentationProvider.GetDocumentation(MemberInfo)'
         public string GetDocumentation(MemberInfo member)
+#pragma warning restore CS1591 // Missing XML comment for publicly visible type or member 'XmlDocumentationProvider.GetDocumentation(MemberInfo)'
         {
             string memberName = String.Format(CultureInfo.InvariantCulture, "{0}.{1}", GetTypeName(member.DeclaringType), member.Name);
             string expression = member.MemberType == MemberTypes.Field ? FieldExpression : PropertyExpression;
@@ -82,7 +92,9 @@ namespace BlogWebAPI.Areas.HelpPage
             return GetTagValue(propertyNode, "summary");
         }
 
+#pragma warning disable CS1591 // Missing XML comment for publicly visible type or member 'XmlDocumentationProvider.GetDocumentation(Type)'
         public string GetDocumentation(Type type)
+#pragma warning restore CS1591 // Missing XML comment for publicly visible type or member 'XmlDocumentationProvider.GetDocumentation(Type)'
         {
             XPathNavigator typeNode = GetTypeNode(type);
             return GetTagValue(typeNode, "summary");

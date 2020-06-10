@@ -20,20 +20,28 @@ namespace BlogWebAPI.Areas.HelpPage
             Src = src;
         }
 
+#pragma warning disable CS1591 // Missing XML comment for publicly visible type or member 'ImageSample.Src'
         public string Src { get; private set; }
+#pragma warning restore CS1591 // Missing XML comment for publicly visible type or member 'ImageSample.Src'
 
+#pragma warning disable CS1591 // Missing XML comment for publicly visible type or member 'ImageSample.Equals(object)'
         public override bool Equals(object obj)
+#pragma warning restore CS1591 // Missing XML comment for publicly visible type or member 'ImageSample.Equals(object)'
         {
             ImageSample other = obj as ImageSample;
             return other != null && Src == other.Src;
         }
 
+#pragma warning disable CS1591 // Missing XML comment for publicly visible type or member 'ImageSample.GetHashCode()'
         public override int GetHashCode()
+#pragma warning restore CS1591 // Missing XML comment for publicly visible type or member 'ImageSample.GetHashCode()'
         {
             return Src.GetHashCode();
         }
 
+#pragma warning disable CS1591 // Missing XML comment for publicly visible type or member 'ImageSample.ToString()'
         public override string ToString()
+#pragma warning restore CS1591 // Missing XML comment for publicly visible type or member 'ImageSample.ToString()'
         {
             return Src;
         }

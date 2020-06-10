@@ -20,7 +20,7 @@
           </Key>
           <Property Name="id" Type="int" Nullable="false" />
           <Property Name="id_author" Type="int" Nullable="false" />
-          <Property Name="content" Type="mediumtext" Nullable="false" />
+          <Property Name="content" Type="varchar" MaxLength="200" Nullable="false" />
         </EntityType>
         <EntityType Name="users">
           <Key>
@@ -49,28 +49,28 @@
           <Property Name="id_commentarist" Type="Int32" Nullable="false" />
           <Property Name="comment" Type="String" MaxLength="2000" FixedLength="false" Unicode="false" Nullable="false" />
         </EntityType>
+        <EntityContainer Name="blogdbEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="comments" EntityType="Self.comments" />
+          <EntitySet Name="users" EntityType="blogdbModel.users" />
+          <EntitySet Name="posts" EntityType="blogdbModel.posts" />
+        </EntityContainer>
+        <EntityType Name="users">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" />
+          <Property Name="userName" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="password" Type="String" Nullable="false" MaxLength="25" FixedLength="false" Unicode="false" />
+          <Property Name="email" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+        </EntityType>
         <EntityType Name="posts">
           <Key>
             <PropertyRef Name="id" />
           </Key>
           <Property Name="id" Type="Int32" Nullable="false" />
           <Property Name="id_author" Type="Int32" Nullable="false" />
-          <Property Name="content" Type="String" MaxLength="16777215" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="content" Type="String" Nullable="false" MaxLength="200" FixedLength="false" Unicode="false" />
         </EntityType>
-        <EntityType Name="users">
-          <Key>
-            <PropertyRef Name="id" />
-          </Key>
-          <Property Name="id" Type="Int32" Nullable="false" />
-          <Property Name="userName" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
-          <Property Name="password" Type="String" MaxLength="25" FixedLength="false" Unicode="false" Nullable="false" />
-          <Property Name="email" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
-        </EntityType>
-        <EntityContainer Name="blogdbEntities" annotation:LazyLoadingEnabled="true">
-          <EntitySet Name="comments" EntityType="Self.comments" />
-          <EntitySet Name="posts" EntityType="Self.posts" />
-          <EntitySet Name="users" EntityType="Self.users" />
-        </EntityContainer>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -87,22 +87,22 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <EntitySetMapping Name="posts">
-            <EntityTypeMapping TypeName="blogdbModel.posts">
-              <MappingFragment StoreEntitySet="posts">
-                <ScalarProperty Name="id" ColumnName="id" />
-                <ScalarProperty Name="id_author" ColumnName="id_author" />
-                <ScalarProperty Name="content" ColumnName="content" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
           <EntitySetMapping Name="users">
             <EntityTypeMapping TypeName="blogdbModel.users">
               <MappingFragment StoreEntitySet="users">
-                <ScalarProperty Name="id" ColumnName="id" />
-                <ScalarProperty Name="userName" ColumnName="userName" />
-                <ScalarProperty Name="password" ColumnName="password" />
                 <ScalarProperty Name="email" ColumnName="email" />
+                <ScalarProperty Name="password" ColumnName="password" />
+                <ScalarProperty Name="userName" ColumnName="userName" />
+                <ScalarProperty Name="id" ColumnName="id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="posts">
+            <EntityTypeMapping TypeName="blogdbModel.posts">
+              <MappingFragment StoreEntitySet="posts">
+                <ScalarProperty Name="content" ColumnName="content" />
+                <ScalarProperty Name="id_author" ColumnName="id_author" />
+                <ScalarProperty Name="id" ColumnName="id" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

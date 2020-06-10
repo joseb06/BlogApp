@@ -26,7 +26,7 @@ namespace BlogDatabase.Models
         }
     
         public virtual DbSet<comments> comments { get; set; }
-        public virtual DbSet<posts> posts { get; set; }
         public virtual DbSet<users> users { get; set; }
+        public virtual DbSet<posts> posts { get; set; }
     }
 }

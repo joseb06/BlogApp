@@ -6,8 +6,8 @@
     <edmx:Diagrams>
       <Diagram DiagramId="5c90d7c2f9d84495ace528d536869501" Name="Diagram1">
         <EntityTypeShape EntityType="blogdbModel.comments" Width="1.5" PointX="5.125" PointY="0.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="blogdbModel.posts" Width="1.5" PointX="2.75" PointY="0.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="blogdbModel.users" Width="1.5" PointX="0.75" PointY="0.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="blogdbModel.users" Width="1.5" PointX="0.875" PointY="0.75" />
+        <EntityTypeShape EntityType="blogdbModel.posts" Width="1.5" PointX="3" PointY="1.125" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

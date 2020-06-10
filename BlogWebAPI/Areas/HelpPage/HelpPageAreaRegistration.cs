@@ -3,9 +3,13 @@ using System.Web.Mvc;
 
 namespace BlogWebAPI.Areas.HelpPage
 {
+#pragma warning disable CS1591 // Missing XML comment for publicly visible type or member 'HelpPageAreaRegistration'
     public class HelpPageAreaRegistration : AreaRegistration
+#pragma warning restore CS1591 // Missing XML comment for publicly visible type or member 'HelpPageAreaRegistration'
     {
+#pragma warning disable CS1591 // Missing XML comment for publicly visible type or member 'HelpPageAreaRegistration.AreaName'
         public override string AreaName
+#pragma warning restore CS1591 // Missing XML comment for publicly visible type or member 'HelpPageAreaRegistration.AreaName'
         {
             get
             {
@@ -13,7 +17,9 @@ namespace BlogWebAPI.Areas.HelpPage
             }
         }
 
+#pragma warning disable CS1591 // Missing XML comment for publicly visible type or member 'HelpPageAreaRegistration.RegisterArea(AreaRegistrationContext)'
         public override void RegisterArea(AreaRegistrationContext context)
+#pragma warning restore CS1591 // Missing XML comment for publicly visible type or member 'HelpPageAreaRegistration.RegisterArea(AreaRegistrationContext)'
         {
             context.MapRoute(
                 "HelpPage_Default",

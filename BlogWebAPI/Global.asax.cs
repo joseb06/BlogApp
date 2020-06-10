@@ -1,9 +1,8 @@
-﻿using System.Web;
+﻿using BlogWebAPI.App_Start;
 using System.Web.Http;
 using System.Web.Mvc;
 using System.Web.Optimization;
 using System.Web.Routing;
-using System.Web.SessionState;
 
 namespace BlogWebAPI
 {
@@ -11,6 +10,8 @@ namespace BlogWebAPI
     {
         protected void Application_Start()
         {
+            IoCConfig.Configure();
+
             AreaRegistration.RegisterAllAreas();
             GlobalConfiguration.Configure(WebApiConfig.Register);
             FilterConfig.RegisterGlobalFilters(GlobalFilters.Filters);
