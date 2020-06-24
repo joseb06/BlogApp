@@ -5,8 +5,8 @@ namespace BlogWebAPI.Models.Posts
 {
     public interface IPostManagerRepository
     {
-        posts Create(Post userToCreate);
-        posts Edit(int postId, Post userToEdit);
+        posts Create(Post postToCreate);
+        posts Edit(int postId, Post postToEdit);
         bool Delete(int postId);
         IEnumerable<object> GetPostsByUser(int userId);
     }
